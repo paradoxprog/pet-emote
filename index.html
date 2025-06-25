@@ -555,7 +555,7 @@
 <header>
     <div class="logo-container">
         <!-- New Logo: Placeholder JPEG for a paw print -->
-        <img src="https://placehold.co/90x90/10b981/ffffff?text=🐾" alt="Pet'emote Logo" class="logo" />
+        <img src="logo.jpg" alt="Pet'emote Logo" class="logo" />
         <h1 class="site-title">Pet'emote</h1>
     </div>
     <nav>
@@ -683,12 +683,14 @@
     const firebaseConfig = {
       apiKey: "AIzaSyAcNOMZNSC5vmhb4vgFP4Rr1KQH0hCD1iY",
       authDomain: "pet-emote.firebaseapp.com",
+      databaseURL: "https://pet-emote-default-rtdb.firebaseio.com",
       projectId: "pet-emote",
       storageBucket: "pet-emote.firebasestorage.app",
       messagingSenderId: "560806298260",
       appId: "1:560806298260:web:8724cda11543d877d52a81",
       measurementId: "G-Q28JF0E294"
     };
+
 
     // Initialize Firebase
     firebase.initializeApp(firebaseConfig);
@@ -860,7 +862,7 @@
                 await saveUserProfile(user.uid, user.email, user.displayName, 'emailPassword');
                 showModal(`Welcome back, ${user.displayName || user.email}! Redirecting to the app...`);
                 // Redirect to your main application page
-                window.location.href = 'homepage.html';
+                window.location.href = 'main.html'; // Changed from homepage.html
             } catch (error) {
                 console.error("Email/Password Login Error:", error);
                 let errorMessage = "Login failed. Please check your email and password.";
@@ -909,9 +911,9 @@
                 const user = userCredential.user;
                 await user.updateProfile({ displayName: fullName }); // Set display name in Auth
                 await saveUserProfile(user.uid, user.email, fullName, 'emailPassword');
-                showModal(`Account created successfully for ${fullName}! Please log in.`);
+                showModal(`Account created successfully for ${fullName}! Redirecting to the app...`);
                 signupForm.reset();
-                showSection(loginSection, navLinkLogin); // Switch to login section
+                window.location.href = 'main.html'; // Changed from homepage.html
             } catch (error) {
                 console.error("Email/Password Signup Error:", error);
                 let errorMessage = "Account creation failed.";
@@ -939,7 +941,7 @@
             const user = result.user;
             await saveUserProfile(user.uid, user.email, user.displayName, 'google.com');
             showModal(`Welcome, ${user.displayName || user.email}! Redirecting to the app...`);
-            window.location.href = 'homepage.html';
+            window.location.href = 'main.html'; // Changed from homepage.html
         } catch (error) {
             console.error("Google Sign-In Error:", error);
             let errorMessage = "Failed to sign in with Google.";
