@@ -3,35 +3,234 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pet'emote: Pet Emotion Analyzer</title>
+    <title>Pet'emote: Main Application</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Inter Font -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- Poppins Font for consistent design -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
+        /* Variables for Dark Mode */
+        :root {
+            --primary-color: #10b981; /* Emerald-500 */
+            --primary-hover: #059669; /* Darker Emerald */
+            --bg-light: #f0f4f8; /* Light blue-gray background */
+            --bg-dark: #1a202c; /* Dark slate background */
+            --card-bg-light: #ffffff;
+            --card-bg-dark: #2d3748; /* Darker card background */
+            --text-color-light: #2d3748; /* Dark gray text */
+            --text-color-dark: #edf2f7; /* Light gray text */
+            --border-color-light: #e2e8f0;
+            --border-color-dark: #4a5568;
+            --shadow-light: rgba(0, 0, 0, 0.08);
+            --shadow-dark: rgba(0, 0, 0, 0.4);
+            --header-bg-light: #ffffff;
+            --header-bg-dark: #2d3748;
+        }
+
         body {
-            font-family: 'Inter', sans-serif;
-            background-color: #f0f4f8; /* Light blue-gray background */
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
+            font-family: 'Poppins', sans-serif;
             margin: 0;
-            padding: 20px;
+            padding: 0;
+            background-color: var(--bg-light);
+            color: var(--text-color-light);
+            transition: background-color 0.4s ease, color 0.4s ease;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* Dark Mode Styles */
+        body.dark {
+            --bg-light: #1a202c;
+            --bg-dark: #1a202c;
+            --card-bg-light: #2d3748;
+            --card-bg-dark: #2d3748;
+            --text-color-light: #edf2f7;
+            --text-color-dark: #e2e8f0;
+            --border-color-light: #4a5568;
+            --border-color-dark: #5b6c81;
+            --shadow-light: rgba(0, 0, 0, 0.6);
+            --shadow-dark: rgba(0, 0, 0, 0.8);
+            --header-bg-light: #2d3748;
+            --header-bg-dark: #2d3748;
+        }
+
+        /* Global Styles */
+        *, *::before, *::after {
             box-sizing: border-box;
         }
-        .container {
-            max-width: 600px;
+
+        /* Header */
+        header {
             width: 100%;
-            background-color: #ffffff;
-            border-radius: 16px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-            padding: 32px;
+            background-color: var(--header-bg-light);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px 40px;
+            box-shadow: 0 4px 12px var(--shadow-light);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        header .logo-container {
+            display: flex;
+            align-items: center;
+        }
+
+        header img.logo {
+            height: 60px; /* Adjusted logo size for better fit */
+            width: 60px;
+            margin-right: 15px;
+            border-radius: 8px;
+            object-fit: cover;
+        }
+
+        header h1.site-title {
+            font-size: 28px;
+            color: var(--text-color-light);
+            margin: 0;
+            font-weight: 700;
+        }
+        body.dark header h1.site-title {
+            color: var(--text-color-dark);
+        }
+
+        nav {
+            display: flex;
+            align-items: center;
+        }
+
+        nav a {
+            margin-left: 30px;
+            text-decoration: none;
+            color: var(--text-color-light);
+            font-weight: 600;
+            font-size: 16px;
+            transition: color 0.3s ease;
+            position: relative;
+        }
+        body.dark nav a {
+            color: var(--text-color-dark);
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            display: block;
+            margin-top: 5px;
+            right: 0;
+            background: var(--primary-color);
+            transition: width 0.3s ease;
+        }
+
+        nav a:hover::after, nav a.active-nav-link::after {
+            width: 100%;
+            left: 0;
+            background: var(--primary-color);
+        }
+        nav a:hover, nav a.active-nav-link {
+            color: var(--primary-color);
+        }
+
+        /* Main Content Area */
+        main {
+            width: 100%;
+            max-width: 960px;
+            padding: 40px 20px;
+            margin: 40px auto;
+            background-color: var(--card-bg-light);
+            border-radius: 12px;
+            box-shadow: 0 8px 25px var(--shadow-light);
+            overflow: hidden;
+            position: relative;
+            min-height: 500px; /* Ensure content doesn't collapse */
+        }
+
+        /* Section Transitions */
+        section {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+            padding: 20px;
+            max-width: 700px; /* Reduced for content focus */
+            margin: 0 auto;
+            display: none; /* Hidden by default */
+        }
+
+        section.active {
+            opacity: 1;
+            transform: translateY(0);
+            display: block; /* Show active section */
+        }
+
+        h2.section-heading {
             text-align: center;
+            margin-bottom: 35px;
+            font-weight: 700;
+            color: var(--primary-color);
+            font-size: 32px;
+        }
+
+        h3, h4 {
+            color: var(--text-color-light);
+            margin-top: 30px;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+        body.dark h3, body.dark h4 {
+            color: var(--text-color-dark);
+        }
+        h3 { font-size: 24px; }
+        h4 { font-size: 20px; }
+
+        p {
+            font-size: 16px;
+            line-height: 1.7;
+            margin-bottom: 15px;
+            color: var(--text-color-light);
+        }
+        body.dark p {
+            color: var(--text-color-dark);
+        }
+
+        ul.features-list {
+            list-style: none;
+            padding-left: 0;
+            margin-bottom: 30px;
+        }
+
+        ul.features-list li {
+            background-color: var(--bg-light);
+            padding: 15px 25px;
+            margin-bottom: 12px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px var(--shadow-light);
+            font-weight: 500;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            border-left: 4px solid var(--primary-color);
+        }
+        body.dark ul.features-list li {
+            background-color: var(--card-bg-dark);
+        }
+        ul.features-list li:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 12px var(--shadow-light);
+        }
+
+        /* Analyzer Section specific styles */
+        .analyzer-content { /* New wrapper for analyzer content to contain it within section max-width */
+            max-width: 600px;
+            margin: 0 auto;
             display: flex;
             flex-direction: column;
             gap: 24px;
         }
+
         .file-input-wrapper {
             position: relative;
             overflow: hidden;
@@ -70,9 +269,13 @@
             border: 1px solid #e2e8f0; /* Gray-200 */
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
         }
+        body.dark #imagePreview {
+            border-color: var(--border-color-dark);
+        }
+
         .loading-spinner {
-            border: 4px solid #f3f3f3;
-            border-top: 4px solid #3498db;
+            border: 4px solid var(--border-color-light); /* Adjusted to use var */
+            border-top: 4px solid var(--primary-color); /* Adjusted to use var */
             border-radius: 50%;
             width: 30px;
             height: 30px;
@@ -80,10 +283,101 @@
             margin: 0 auto;
             display: none; /* Hidden by default */
         }
+        body.dark .loading-spinner {
+            border-color: var(--border-color-dark);
+            border-top-color: var(--primary-color);
+        }
         @keyframes spin {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
+
+        #analyzeButton {
+            background-color: var(--primary-color); /* Adjusted to use var */
+            color: white;
+            padding: 15px 30px;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 18px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            border: none;
+            width: 100%;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            margin-top: 15px;
+        }
+        #analyzeButton:hover {
+            background-color: var(--primary-hover); /* Adjusted to use var */
+            transform: translateY(-2px);
+        }
+        #analyzeButton:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        #resultDisplay {
+            background-color: var(--bg-light);
+            padding: 20px;
+            border-radius: 12px;
+            text-align: left;
+            box-shadow: inset 0 2px 5px rgba(0,0,0,0.05);
+            border: 1px solid var(--border-color-light);
+            margin-top: 0; /* Adjusted from previous 20px */
+        }
+        body.dark #resultDisplay {
+            background-color: var(--card-bg-dark);
+            border-color: var(--border-color-dark);
+        }
+        #resultDisplay h2 {
+            color: var(--primary-color);
+            margin-bottom: 10px;
+        }
+        #emotionText {
+            color: var(--text-color-light);
+            font-style: italic;
+        }
+        body.dark #emotionText {
+            color: var(--text-color-dark);
+        }
+
+
+        /* Profile Section */
+        .profile-info {
+            background-color: var(--bg-light);
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 2px 8px var(--shadow-light);
+            margin-bottom: 20px;
+        }
+        body.dark .profile-info {
+            background-color: var(--card-bg-dark);
+        }
+        .profile-info p {
+            margin: 5px 0;
+        }
+        .profile-info strong {
+            color: var(--primary-color);
+        }
+        .logout-button {
+            background-color: #ef4444; /* Red-500 */
+            color: white;
+            padding: 12px 25px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            border: none;
+            margin-top: 20px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+        }
+        .logout-button:hover {
+            background-color: #dc2626; /* Red-600 */
+            transform: translateY(-2px);
+        }
+
 
         /* Modal Styles */
         .modal {
@@ -100,20 +394,23 @@
             align-items: center;
         }
         .modal-content {
-            background-color: #fefefe;
+            background-color: var(--card-bg-light);
             margin: auto;
             padding: 20px;
-            border: 1px solid #888;
+            border: 1px solid var(--border-color-light);
             width: 80%;
             max-width: 400px;
             border-radius: 10px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            box-shadow: 0 5px 15px var(--shadow-light);
             text-align: center;
             position: relative;
         }
+        body.dark .modal-content {
+            background-color: var(--card-bg-dark);
+            border-color: var(--border-color-dark);
+        }
         .close-button {
-            color: #aaa;
-            float: right;
+            color: var(--text-color-light);
             font-size: 28px;
             font-weight: bold;
             position: absolute;
@@ -121,116 +418,538 @@
             right: 15px;
             cursor: pointer;
         }
+        body.dark .close-button {
+            color: var(--text-color-dark);
+        }
         .close-button:hover,
         .close-button:focus {
-            color: black;
+            color: var(--primary-color);
             text-decoration: none;
             cursor: pointer;
         }
-        .logo-container {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px; /* Space between logo and text */
+        #modalOkButton {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            border: none;
+            margin-top: 15px;
         }
-        .logo-img { /* New style for the JPEG image */
-            width: 85px; /* Adjust size as needed */
-            height: 85px; /* Adjust size as needed */
-            border-radius: 8px; /* Optional: adds rounded corners to the image */
-            object-fit: cover; /* Ensures the image covers the area without distortion */
+        #modalOkButton:hover {
+            background-color: var(--primary-hover);
+            transform: translateY(-1px);
+        }
+
+
+        /* Dark Mode Toggle */
+        .toggle-dark {
+            position: relative;
+            display: inline-block;
+            width: 55px;
+            height: 30px;
+            border-radius: 30px;
+            background-color: var(--border-color-light);
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            vertical-align: middle;
+            margin-left: 20px;
+            border: none;
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.2);
+        }
+        body.dark .toggle-dark {
+            background-color: var(--border-color-dark);
+        }
+
+        .toggle-dark input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+            position: absolute;
+            left: -9999px;
+        }
+
+        .toggle-thumb {
+            position: absolute;
+            top: 3px;
+            left: 3px;
+            width: 24px;
+            height: 24px;
+            background-color: var(--primary-color);
+            border-radius: 50%;
+            transition: left 0.3s ease, background-color 0.3s ease, transform 0.2s ease;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        body.dark .toggle-dark input:checked + .toggle-thumb {
+            background-color: #f0f0f0; /* Light thumb on dark checked */
+        }
+
+
+        .toggle-dark input:checked + .toggle-thumb {
+            left: 28px;
+            transform: rotate(360deg);
+        }
+
+
+        /* Footer */
+        footer {
+            width: 100%;
+            padding: 20px;
+            text-align: center;
+            background-color: var(--header-bg-light);
+            color: var(--text-color-light);
+            font-size: 14px;
+            margin-top: auto;
+            box-shadow: 0 -2px 8px var(--shadow-light);
+            border-top: 1px solid var(--border-color-light);
+        }
+        body.dark footer {
+            background-color: var(--header-bg-dark);
+            color: var(--text-color-dark);
+            border-top-color: var(--border-color-dark);
+        }
+
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                padding: 15px 20px;
+                text-align: center;
+            }
+            header .logo-container {
+                margin-bottom: 15px;
+            }
+            nav {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            nav a {
+                margin: 0 15px 10px;
+            }
+            header h1.site-title {
+                font-size: 24px;
+            }
+            main {
+                margin: 20px auto;
+                padding: 20px 15px;
+            }
+            h2.section-heading {
+                font-size: 28px;
+                margin-bottom: 25px;
+            }
+            ul.features-list li {
+                padding: 12px 18px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            header img.logo {
+                height: 50px;
+                width: 50px;
+            }
+            header h1.site-title {
+                font-size: 20px;
+            }
+            nav a {
+                margin: 0 10px 8px;
+                font-size: 14px;
+            }
+            main {
+                padding: 15px;
+                margin: 15px;
+            }
+            h2.section-heading {
+                font-size: 24px;
+            }
+            p, ul.features-list li, #analyzeButton {
+                font-size: 15px;
+            }
+            #analyzeButton {
+                padding: 12px;
+                font-size: 16px;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="logo-container">
-            <!-- Replaced SVG with an <img> tag for JPEG logo -->
-            <img class="logo-img" src="logo.jpg" alt="Pet'emote Logo">
-            <h1 class="text-3xl font-bold text-gray-800">Pet'emote</h1>
-        </div>
-        <p class="text-gray-600">Upload an image of your dog or cat to understand their emotions!</p>
 
-        <!-- Image Upload Section -->
-        <div class="file-input-wrapper">
-            <input type="file" id="imageUpload" accept="image/*" class="file-input">
-            <label for="imageUpload" class="file-input-label">
-                Select Pet Image
-            </label>
-        </div>
-
-        <!-- Image Preview -->
-        <img id="imagePreview" src="#" alt="Image Preview">
-
-        <!-- Analyze Button -->
-        <button id="analyzeButton" class="bg-emerald-500 text-white py-3 px-6 rounded-lg font-bold shadow-md hover:bg-emerald-600 transition-colors duration-300 transform hover:scale-105 active:scale-95 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-opacity-50">
-            Analyze Emotion
-        </button>
-
-        <!-- Loading Spinner -->
-        <div id="loadingSpinner" class="loading-spinner"></div>
-
-        <!-- Result Display -->
-        <div id="resultDisplay" class="bg-blue-50 p-6 rounded-lg text-left shadow-inner border border-blue-200">
-            <h2 class="text-xl font-semibold text-blue-800 mb-2">Emotion Analysis:</h2>
-            <p id="emotionText" class="text-gray-700 italic">Upload an image and click 'Analyze Emotion' to see results.</p>
-        </div>
+<header>
+    <div class="logo-container">
+        <!-- New Logo: Placeholder JPEG for a paw print -->
+        <img src="https://placehold.co/90x90/10b981/ffffff?text=🐾" alt="Pet'emote Logo" class="logo" />
+        <h1 class="site-title">Pet'emote</h1>
     </div>
+    <nav>
+        <a href="#" id="link-analyzer" class="active-nav-link">Analyzer</a>
+        <a href="#" id="link-articles">Articles</a>
+        <a href="#" id="link-personalized-content">Personalized Content</a>
+        <a href="#" id="link-profile">Profile</a>
+        <label class="toggle-dark" for="darkToggle" aria-label="Toggle dark mode">
+            <input type="checkbox" id="darkToggle" />
+            <span class="toggle-thumb"></span>
+        </label>
+    </nav>
+</header>
 
-    <!-- Custom Modal for Messages -->
-    <div id="myModal" class="modal">
-        <div class="modal-content">
-            <span class="close-button">&times;</span>
-            <p id="modalMessage" class="text-lg text-gray-800"></p>
-            <button id="modalOkButton" class="mt-4 bg-blue-500 text-white py-2 px-5 rounded-md hover:bg-blue-600 transition-colors duration-300">OK</button>
+<main>
+    <!-- Analyzer Section -->
+    <section id="analyzer" class="active">
+        <h2 class="section-heading">Pet Emotion Analyzer</h2>
+        <div class="analyzer-content">
+            <p class="text-gray-600 mb-6">Upload an image of your dog or cat to understand their emotions!</p>
+
+            <div class="file-input-wrapper">
+                <input type="file" id="imageUpload" accept="image/*" class="file-input">
+                <label for="imageUpload" class="file-input-label">
+                    Select Pet Image
+                </label>
+            </div>
+
+            <img id="imagePreview" src="#" alt="Image Preview">
+
+            <button id="analyzeButton" class="bg-emerald-500 text-white py-3 px-6 rounded-lg font-bold shadow-md hover:bg-emerald-600 transition-colors duration-300 transform hover:scale-105 active:scale-95 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-opacity-50">
+                Analyze Emotion
+            </button>
+
+            <div id="loadingSpinner" class="loading-spinner"></div>
+
+            <div id="resultDisplay" class="bg-blue-50 p-6 rounded-lg text-left shadow-inner border border-blue-200">
+                <h2 class="text-xl font-semibold text-blue-800 mb-2">Emotion Analysis:</h2>
+                <p id="emotionText" class="text-gray-700 italic">Upload an image and click 'Analyze Emotion' to see results.</p>
+            </div>
         </div>
+    </section>
+
+    <!-- Expert Articles Section -->
+    <section id="articles">
+        <h2 class="section-heading">Expert Articles</h2>
+        <p>Dive deep into our curated collection of articles written by pet behaviorists, veterinarians, and experienced trainers.</p>
+        <ul class="features-list">
+            <li><strong>Understanding Canine Body Language:</strong> Decoding barks, tail wags, and facial expressions.</li>
+            <li><strong>Feline Communication Masterclass:</strong> Interpreting meows, purrs, ear positions, and tail movements.</li>
+            <li><strong>Optimal Nutrition for All Life Stages:</strong> Choosing the right diet for puppies/kittens, adults, and seniors.</li>
+            <li><strong>Effective Positive Reinforcement Training:</strong> Building strong bonds through reward-based techniques.</li>
+            <li><strong>Separation Anxiety Solutions:</strong> Strategies to ease your pet's stress when left alone.</li>
+            <li><strong>Common Pet Health Issues & Prevention:</strong> Recognizing symptoms and proactive care for a healthy pet.</li>
+            <li><strong>Grooming Essentials for Dogs and Cats:</strong> Tips for coat care, nail trimming, and dental hygiene.</li>
+            <li><strong>Enrichment Activities for Mental Stimulation:</strong> Keeping your pet happy and engaged indoors and out.</li>
+        </ul>
+        <p>Explore these and many more articles to become a more informed and confident pet parent!</p>
+    </section>
+
+    <!-- Personalized Content Section -->
+    <section id="personalized-content">
+        <h2 class="section-heading">Personalized Content for Your Pet</h2>
+        <p class="text-gray-600 mb-6">Enter your pet's details to get tailored recommendations and insights.</p>
+
+        <div class="bg-blue-50 p-6 rounded-lg text-left shadow-inner border border-blue-200 mb-6">
+            <div class="mb-4">
+                <label for="petName" class="block text-gray-700 text-sm font-bold mb-2">Pet's Name:</label>
+                <input type="text" id="petName" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline rounded-md" placeholder="e.g., Buddy">
+            </div>
+            <div class="mb-4">
+                <label for="petBreed" class="block text-gray-700 text-sm font-bold mb-2">Pet's Breed (or type):</label>
+                <input type="text" id="petBreed" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline rounded-md" placeholder="e.g., Golden Retriever, Siamese">
+            </div>
+            <div class="mb-4">
+                <label for="petAge" class="block text-gray-700 text-sm font-bold mb-2">Pet's Age (in years):</label>
+                <input type="number" id="petAge" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline rounded-md" placeholder="e.g., 3">
+            </div>
+            <div class="mb-6">
+                <label for="petWeight" class="block text-gray-700 text-sm font-bold mb-2">Pet's Weight (in kg/lbs):</label>
+                <input type="text" id="petWeight" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline rounded-md" placeholder="e.g., 25kg, 55lbs">
+            </div>
+            <button id="generateContentButton" class="bg-emerald-500 text-white py-3 px-6 rounded-lg font-bold shadow-md hover:bg-emerald-600 transition-colors duration-300 transform hover:scale-105 active:scale-95 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-opacity-50 w-full">
+                Generate Personalized Advice
+            </button>
+            <div id="personalizedLoadingSpinner" class="loading-spinner mt-4"></div>
+        </div>
+
+        <div id="personalizedResultDisplay" class="bg-blue-50 p-6 rounded-lg text-left shadow-inner border border-blue-200 mt-6">
+            <h3 class="text-xl font-semibold text-blue-800 mb-2">Your Personalized Pet Advice:</h3>
+            <div id="personalizedContentText" class="text-gray-700 leading-relaxed">
+                <p>Enter your pet's details above and click 'Generate Personalized Advice' to see customized recommendations appear here.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Profile Section -->
+    <section id="profile">
+        <h2 class="section-heading">Your Pet'emote Profile</h2>
+        <div class="profile-info">
+            <p><strong>User ID:</strong> <span id="profileUid">Not logged in</span></p>
+            <p><strong>Email:</strong> <span id="profileEmail">Not logged in</span></p>
+            <p><strong>Display Name:</strong> <span id="profileDisplayName">Not logged in</span></p>
+            <p><strong>Provider:</strong> <span id="profileProvider">N/A</span></p>
+        </div>
+        <button id="logoutButton" class="logout-button">Logout</button>
+    </section>
+
+</main>
+
+<!-- Custom Modal for Messages -->
+<div id="myModal" class="modal">
+    <div class="modal-content">
+        <span class="close-button">&times;</span>
+        <p id="modalMessage" class="text-lg text-gray-800"></p>
+        <button id="modalOkButton" class="mt-4 bg-blue-500 text-white py-2 px-5 rounded-md hover:bg-blue-600 transition-colors duration-300">OK</button>
     </div>
+</div>
 
-    <script>
-        const imageUpload = document.getElementById('imageUpload');
-        const imagePreview = document.getElementById('imagePreview');
-        const analyzeButton = document.getElementById('analyzeButton');
-        const loadingSpinner = document.getElementById('loadingSpinner');
-        const emotionText = document.getElementById('emotionText');
-        const myModal = document.getElementById('myModal');
-        const modalMessage = document.getElementById('modalMessage');
-        const closeButton = document.querySelector('.close-button');
-        const modalOkButton = document.getElementById('modalOkButton');
+<footer>
+    <p>&copy; 2025 Pet'emote. All rights reserved.</p>
+</footer>
 
-        let uploadedBase64Image = null; // Store the base64 image
-        let uploadedImageMimeType = null; // Store the image MIME type
+<!-- Firebase SDKs - v8.10.0 as requested -->
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+<script>
+    // --- Firebase Configuration ---
+    const firebaseConfig = {
+        apiKey: "AIzaSyCWjeZwrqCwe5NWN-Pdm5GPkp1_qJrCuSU",
+        authDomain: "bloodlink-278a4.firebaseapp.com",
+        databaseURL: "https://bloodlink-278a4-default-rtdb.firebaseio.com",
+        projectId: "bloodlink-278a4",
+        storageBucket: "bloodlink-278a4.firebasestorage.app",
+        messagingSenderId: "88657445618",
+        appId: "1:88657445618:web:90999baf48e9718ff5466b",
+        measurementId: "G-XQGB69C3TP"
+    };
 
-        // Function to show the custom modal
-        function showModal(message) {
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    const database = firebase.database();
+    const auth = firebase.auth();
+
+    // --- UI Elements for Analyzer Section ---
+    const imageUpload = document.getElementById('imageUpload');
+    const imagePreview = document.getElementById('imagePreview');
+    const analyzeButton = document.getElementById('analyzeButton');
+    const loadingSpinner = document.getElementById('loadingSpinner');
+    const emotionText = document.getElementById('emotionText');
+
+    // --- UI Elements for Profile Section ---
+    const profileUid = document.getElementById('profileUid');
+    const profileEmail = document.getElementById('profileEmail');
+    const profileDisplayName = document.getElementById('profileDisplayName');
+    const profileProvider = document.getElementById('profileProvider');
+    const logoutButton = document.getElementById('logoutButton');
+
+    // --- UI Elements for Personalized Content Section ---
+    const petNameInput = document.getElementById('petName');
+    const petBreedInput = document.getElementById('petBreed');
+    const petAgeInput = document.getElementById('petAge');
+    const petWeightInput = document.getElementById('petWeight');
+    const generateContentButton = document.getElementById('generateContentButton');
+    const personalizedLoadingSpinner = document.getElementById('personalizedLoadingSpinner');
+    const personalizedContentText = document.getElementById('personalizedContentText');
+
+    // --- Modal Elements (Global scope for accessibility) ---
+    const myModal = document.getElementById('myModal');
+    const modalMessage = document.getElementById('modalMessage');
+    const closeButton = document.querySelector('.close-button');
+    const modalOkButton = document.getElementById('modalOkButton');
+
+    // Function to show the custom modal
+    function showModal(message) {
+        if (modalMessage) {
             modalMessage.textContent = message;
+        }
+        if (myModal) {
             myModal.style.display = 'flex'; // Use flex to center
         }
+    }
 
-        // Function to hide the custom modal
-        function hideModal() {
+    // Function to hide the custom modal
+    function hideModal() {
+        if (myModal) {
             myModal.style.display = 'none';
         }
+    }
 
-        // Close button and OK button handlers for the modal
-        closeButton.onclick = hideModal;
-        modalOkButton.onclick = hideModal;
-        window.onclick = function(event) {
-            if (event.target == myModal) {
-                hideModal();
+    // Attach event listeners for modal
+    if (closeButton) closeButton.onclick = hideModal;
+    if (modalOkButton) modalOkButton.onclick = hideModal;
+    window.onclick = function(event) {
+        if (event.target == myModal) {
+            hideModal();
+        }
+    };
+
+    // --- Section Navigation Logic ---
+    const sections = {
+        'analyzer': document.getElementById('analyzer'),
+        'articles': document.getElementById('articles'),
+        'personalized-content': document.getElementById('personalized-content'),
+        'profile': document.getElementById('profile')
+    };
+
+    const navLinks = {
+        'link-analyzer': document.getElementById('link-analyzer'),
+        'link-articles': document.getElementById('link-articles'),
+        'link-personalized-content': document.getElementById('link-personalized-content'),
+        'link-profile': document.getElementById('link-profile')
+    };
+
+    // Consolidated list of all navigation link elements for iteration
+    const allNavLinks = Object.values(navLinks);
+
+
+    function showSection(sectionIdToShow) {
+        // Hide all sections
+        for (const id in sections) {
+            if (sections.hasOwnProperty(id) && sections[id]) {
+                sections[id].style.display = 'none';
+                sections[id].classList.remove('active');
             }
-        };
+        }
+        // Remove active class from all nav links
+        allNavLinks.forEach(link => {
+            if (link) link.classList.remove('active-nav-link');
+        });
 
-        // Handle image file selection
+        // Show the requested section and set active nav link
+        if (sections[sectionIdToShow]) {
+            sections[sectionIdToShow].style.display = 'block';
+            void sections[sectionIdToShow].offsetWidth; // Trigger reflow for animation
+            sections[sectionIdToShow].classList.add('active');
+        }
+        if (navLinks[`link-${sectionIdToShow}`]) {
+            navLinks[`link-${sectionIdToShow}`].classList.add('active-nav-link');
+        }
+    }
+
+    // Attach navigation event listeners
+    if (navLinks['link-analyzer']) navLinks['link-analyzer'].addEventListener('click', (e) => { e.preventDefault(); showSection('analyzer'); });
+    if (navLinks['link-articles']) navLinks['link-articles'].addEventListener('click', (e) => { e.preventDefault(); showSection('articles'); });
+    if (navLinks['link-personalized-content']) navLinks['link-personalized-content'].addEventListener('click', (e) => { e.preventDefault(); showSection('personalized-content'); });
+    if (navLinks['link-profile']) navLinks['link-profile'].addEventListener('click', (e) => { e.preventDefault(); showSection('profile'); });
+
+
+    // --- Dark Mode Toggle Logic ---
+    const darkToggle = document.getElementById('darkToggle');
+
+    function applyDarkMode(isDark) {
+        if (isDark) {
+            document.body.classList.add('dark');
+            if (darkToggle) darkToggle.checked = true;
+            localStorage.setItem('petEmoteDarkMode', 'enabled'); // Unique key for this app
+        } else {
+            document.body.classList.remove('dark');
+            if (darkToggle) darkToggle.checked = false;
+            localStorage.removeItem('petEmoteDarkMode');
+        }
+    }
+
+    // Initialize toggle state from localStorage on page load
+    applyDarkMode(localStorage.getItem('petEmoteDarkMode') === 'enabled');
+
+    if (darkToggle) {
+        darkToggle.addEventListener('change', () => {
+            applyDarkMode(darkToggle.checked);
+        });
+    }
+
+    // --- Firebase Authentication State Listener ---
+    // This will run when the auth state changes (e.g., user logs in/out)
+    auth.onAuthStateChanged(user => {
+        if (user) {
+            // User is signed in.
+            profileUid.textContent = user.uid;
+            profileEmail.textContent = user.email || 'N/A';
+            profileDisplayName.textContent = user.displayName || 'Guest User';
+            profileProvider.textContent = user.providerData[0] ? user.providerData[0].providerId : 'N/A';
+
+            // Ensure user profile exists in RTDB or update it
+            saveUserProfile(user.uid, user.email, user.displayName, user.providerData[0] ? user.providerData[0].providerId : 'unknown')
+                .then(() => console.log("User profile ensured in RTDB."))
+                .catch(error => console.error("Error ensuring user profile in RTDB:", error));
+
+            // Automatically navigate to the Analyzer section upon successful login/load
+            showSection('analyzer');
+
+        } else {
+            // User is signed out.
+            profileUid.textContent = 'Not logged in';
+            profileEmail.textContent = 'Not logged in';
+            profileDisplayName.textContent = 'Not logged in';
+            profileProvider.textContent = 'N/A';
+            showModal("You are logged out. Please login to access full features.");
+            // Redirect to landing page if main.html needs a login
+            window.location.href = 'index.html'; // Changed from '/index.html' to 'index.html'
+        }
+    });
+
+    // --- Logout Functionality ---
+    if (logoutButton) {
+        logoutButton.addEventListener('click', async () => {
+            try {
+                await auth.signOut();
+                showModal("You have been logged out successfully.");
+                // Redirect to the landing page after logout
+                window.location.href = 'index.html'; // Changed from '/index.html' to 'index.html'
+            } catch (error) {
+                console.error("Error logging out:", error);
+                showModal("Failed to log out. Please try again.");
+            }
+        });
+    }
+
+    // Helper to store user data in Realtime Database
+    async function saveUserProfile(uid, email, displayName, providerId) {
+        if (!database) {
+            console.error("Firebase Realtime Database not initialized.");
+            return;
+        }
+        try {
+            const userRef = database.ref(`users/${uid}`);
+            // Check if user data already exists to avoid overwriting display name for existing users
+            const snapshot = await userRef.once('value');
+            if (!snapshot.exists()) {
+                 await userRef.set({
+                    uid: uid,
+                    email: email,
+                    displayName: displayName || 'User',
+                    providerId: providerId,
+                    createdAt: firebase.database.ServerValue.TIMESTAMP,
+                    lastSignInTime: firebase.database.ServerValue.TIMESTAMP
+                });
+                console.log("New user profile created in Realtime Database:", uid);
+            } else {
+                // Update only lastSignInTime for existing users
+                await userRef.update({
+                    lastSignInTime: firebase.database.ServerValue.TIMESTAMP
+                });
+                console.log("Existing user profile updated in Realtime Database:", uid);
+            }
+        } catch (error) {
+            console.error("Error saving user profile to Realtime Database:", error);
+            showModal("Error saving user profile data.");
+        }
+    }
+
+
+    // --- Pet Emotion Analyzer Logic ---
+    let uploadedBase64Image = null; // Store the base64 image
+    let uploadedImageMimeType = null; // Store the image MIME type
+
+    // Handle image file selection
+    if (imageUpload) {
         imageUpload.addEventListener('change', function(event) {
             const file = event.target.files[0];
             if (file) {
-                // Check if the file is an image
                 if (!file.type.startsWith('image/')) {
                     showModal('Please upload a valid image file (e.g., JPEG, PNG).');
-                    imageUpload.value = ''; // Clear the file input
+                    imageUpload.value = '';
                     imagePreview.style.display = 'none';
                     uploadedBase64Image = null;
                     uploadedImageMimeType = null;
                     emotionText.textContent = 'Upload an image and click \'Analyze Emotion\' to see results.';
+                    analyzeButton.disabled = true; // Disable button if no valid image
                     return;
                 }
 
@@ -238,9 +957,10 @@
                 const reader = new FileReader();
                 reader.onload = function(e) {
                     imagePreview.src = e.target.result;
-                    imagePreview.style.display = 'block'; // Show the image
-                    uploadedBase64Image = e.target.result.split(',')[1]; // Get base64 part
-                    emotionText.textContent = 'Image selected. Click "Analyze Emotion" to see results.';
+                    imagePreview.style.display = 'block';
+                    uploadedBase64Image = e.target.result.split(',')[1];
+                    emotionText.textContent = 'Image selected. Click "Analyze Emotion" to analyze.';
+                    analyzeButton.disabled = false; // Enable button if image is selected
                 };
                 reader.readAsDataURL(file);
             } else {
@@ -249,10 +969,13 @@
                 uploadedBase64Image = null;
                 uploadedImageMimeType = null;
                 emotionText.textContent = 'Upload an image and click \'Analyze Emotion\' to see results.';
+                analyzeButton.disabled = true; // Disable button if no image
             }
         });
+    }
 
-        // Handle analyze button click
+    // Handle analyze button click
+    if (analyzeButton) {
         analyzeButton.addEventListener('click', async function() {
             if (!uploadedBase64Image || !uploadedImageMimeType) {
                 showModal('Please select an image first.');
@@ -264,10 +987,8 @@
             analyzeButton.disabled = true; // Disable button during analysis
 
             try {
-                // Prompt for the Gemini Vision model
                 const prompt = "Analyze the emotion and current situation of the dog or cat in this image. Is it hungry, playful, sleepy, sad, happy, curious, or showing any other distinct emotion? Describe its current situation in a concise manner. Focus on what the pet might be feeling or doing.";
 
-                // Gemini API call configuration
                 const payload = {
                     contents: [
                         {
@@ -285,13 +1006,8 @@
                     ],
                 };
 
-                console.log('API Request Payload:', JSON.stringify(payload, null, 2)); // Log the payload
-
-                // Your provided API key
-                const apiKey = "AIzaSyCcPlWydAmf4IQEQwLqvk_ZrJbxWQE1cYY"; // Make sure to replace this with your actual key if needed
+                const apiKey = "AIzaSyCcPlWydAmf4IQEQwLqvk_ZrJbxWQE1cYY";
                 const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
-
-                console.log('API URL being used:', apiUrl); // Log the full API URL including the key parameter
 
                 const response = await fetch(apiUrl, {
                     method: 'POST',
@@ -299,23 +1015,20 @@
                     body: JSON.stringify(payload)
                 });
 
-                console.log('API Response Status:', response.status); // Log the response status
                 if (!response.ok) {
                     const errorText = await response.text();
                     console.error('API Error Response Text:', errorText);
-                    // Provide a more direct error message to the user about the 403
                     if (response.status === 403) {
-                         showModal(`API Error: 403 Forbidden. This usually means the API key is missing or invalid. Please ensure your environment is correctly providing the API key.`);
-                         emotionText.textContent = 'Analysis failed: API Key Error (403 Forbidden).';
+                        showModal(`API Error: 403 Forbidden. This usually means the API key is missing or invalid.`);
+                        emotionText.textContent = 'Analysis failed: API Key Error (403 Forbidden).';
                     } else {
-                         showModal(`API Error: ${response.status} - ${errorText.substring(0, Math.min(errorText.length, 150))}... Check console for full error.`);
-                         emotionText.textContent = 'Analysis failed due to API error.';
+                        showModal(`API Error: ${response.status} - ${errorText.substring(0, Math.min(errorText.length, 150))}...`);
+                        emotionText.textContent = 'Analysis failed due to API error.';
                     }
                     return;
                 }
 
                 const result = await response.json();
-                console.log('API Result (Parsed JSON):', result); // Log the parsed JSON result
 
                 if (result.candidates && result.candidates.length > 0 &&
                     result.candidates[0].content && result.candidates[0].content.parts &&
@@ -337,6 +1050,139 @@
                 analyzeButton.disabled = false; // Re-enable button
             }
         });
-    </script>
+    }
+
+    // --- Personalized Content Logic ---
+    // Handle Generate Personalized Content button click
+    if (generateContentButton) {
+        generateContentButton.addEventListener('click', async function() {
+            const petName = petNameInput.value.trim();
+            const petBreed = petBreedInput.value.trim();
+            const petAge = petAgeInput.value.trim();
+            const petWeight = petWeightInput.value.trim();
+
+            if (!petName || !petBreed || !petAge || !petWeight) {
+                showModal('Please fill in all pet details to generate personalized content.');
+                return;
+            }
+
+            personalizedLoadingSpinner.style.display = 'block';
+            personalizedContentText.innerHTML = '<p>Generating personalized advice... This might take a moment.</p>';
+            generateContentButton.disabled = true;
+
+            try {
+                const prompt = `Generate personalized content for a pet with the following details:
+                Name: ${petName}
+                Breed/Type: ${petBreed}
+                Age: ${petAge} years
+                Weight: ${petWeight}
+
+                Please provide advice for the following categories:
+                1.  **Customized Diet Plan:** Recommendations based on its breed, age, weight, and activity level.
+                2.  **Behavioral Insights:** Articles and tips relevant to its specific behavioral patterns (e.g., for its breed, or general tips).
+                3.  **Health Reminders:** Personalized alerts/advice for vaccinations, vet check-ups, and medication.
+                4.  **Training Roadmaps:** Step-by-step training plans adapted to its learning style.
+                5.  **Activity Suggestions:** Ideas for exercises and play tailored to its energy and breed.
+
+                Structure the response clearly with headings for each category.`;
+
+                const payload = {
+                    contents: [{
+                        role: "user",
+                        parts: [{ text: prompt }]
+                    }],
+                    generationConfig: {
+                        responseMimeType: "text/markdown", // Request markdown for formatted output
+                    }
+                };
+
+                const apiKey = "AIzaSyCcPlWydAmf4IQEQwLqvk_ZrJbxWQE1cYY";
+                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    console.error('API Error Response Text:', errorText);
+                    if (response.status === 403) {
+                        showModal(`API Error: 403 Forbidden. This usually means the API key is missing or invalid.`);
+                        personalizedContentText.innerHTML = '<p class="text-red-600">Analysis failed: API Key Error (403 Forbidden).</p>';
+                    } else {
+                        showModal(`API Error: ${response.status} - ${errorText.substring(0, Math.min(errorText.length, 150))}...`);
+                        personalizedContentText.innerHTML = '<p class="text-red-600">Analysis failed due to API error.</p>';
+                    }
+                    return;
+                }
+
+                const result = await response.json();
+
+                if (result.candidates && result.candidates.length > 0 &&
+                    result.candidates[0].content && result.candidates[0].content.parts &&
+                    result.candidates[0].content.parts.length > 0) {
+                    const text = result.candidates[0].content.parts[0].text;
+                    // For text/markdown, we need to convert markdown to HTML for display.
+                    // A simple way is to use a markdown parser library or manually convert.
+                    // For this simple case, we'll just set innerHTML directly, assuming
+                    // Gemini output will be reasonable HTML or plain text.
+                    // If complex markdown is expected, a library like 'marked' would be needed.
+                    personalizedContentText.innerHTML = convertMarkdownToHtml(text); // Use a helper function
+                } else {
+                    personalizedContentText.innerHTML = '<p class="text-red-600">Could not get personalized advice. The AI response was empty or unexpected.</p>';
+                    console.error('Unexpected API response structure or empty content:', result);
+                    showModal('Could not get a valid response from the AI. The response structure was unexpected. See console for details.');
+                }
+
+            } catch (error) {
+                console.error('Error generating personalized content (network or parsing):', error);
+                showModal('A network error or parsing error occurred. Please check your internet connection or console for more details.');
+                personalizedContentText.innerHTML = '<p class="text-red-600">Failed to generate personalized advice. Please try again.</p>';
+            } finally {
+                personalizedLoadingSpinner.style.display = 'none';
+                generateContentButton.disabled = false;
+            }
+        });
+    }
+
+    // Basic Markdown to HTML conversion (for simple markdown like **bold**, *italic*, lists, headings)
+    // For full markdown support, consider a library like 'marked.js'
+    function convertMarkdownToHtml(markdown) {
+        let html = markdown;
+        // Convert headings: # -> h1, ## -> h2, ### -> h3
+        html = html.replace(/^### (.*$)/gim, '<h3>$1</h3>');
+        html = html.replace(/^## (.*$)/gim, '<h2>$1</h2>');
+        html = html.replace(/^# (.*$)/gim, '<h1>$1</h1>');
+
+        // Convert bold: **text**
+        html = html.replace(/\*\*(.*?)\*\*/gim, '<strong>$1</strong>');
+        // Convert italic: *text*
+        html = html.replace(/\*(.*?)\*/gim, '<em>$1</em>');
+
+        // Convert unordered lists: - item
+        html = html.replace(/^\s*\-\s(.*$)/gim, '<li>$1</li>');
+        if (html.includes('<li>') && !html.includes('<ul>')) { // Wrap in ul if li exists and not already wrapped
+            html = `<ul>${html}</ul>`;
+        }
+        // Basic paragraph wrapping: ensure text lines not already wrapped are in <p> tags
+        // This is a simplified approach and might need refinement for complex markdown
+        html = html.split('\n').map(line => {
+            // Check if the line is not empty and doesn't start with a known HTML tag or list item
+            if (line.trim() !== '' && !line.match(/<\/?(h[1-6]|ul|li|strong|em|p)>/i) && !line.match(/^\s*[-\*]\s/)) {
+                return `<p>${line.trim()}</p>`;
+            }
+            return line;
+        }).join('');
+
+        return html;
+    }
+
+
+    // Initial section to show on page load - will be overridden by onAuthStateChanged if user logged in
+    showSection('analyzer');
+
+</script>
 </body>
 </html>
