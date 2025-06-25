@@ -880,7 +880,7 @@
             profileProvider.textContent = 'N/A';
             showModal("You are logged out. Please login to access full features.");
             // Redirect to landing page if main.html needs a login
-            window.location.href = 'index.html'; // Changed from '/index.html' to 'index.html'
+            window.location.replace('./index.html'); // Changed from 'index.html' to './index.html'
         }
     });
 
@@ -891,7 +891,7 @@
                 await auth.signOut();
                 showModal("You have been logged out successfully.");
                 // Redirect to the landing page after logout
-                window.location.href = 'index.html'; // Changed from '/index.html' to 'index.html'
+                window.location.replace('./index.html'); // Changed from 'index.html' to './index.html'
             } catch (error) {
                 console.error("Error logging out:", error);
                 showModal("Failed to log out. Please try again.");
