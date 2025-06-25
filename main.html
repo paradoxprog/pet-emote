@@ -1075,16 +1075,16 @@
                 Name: ${petName}
                 Breed/Type: ${petBreed}
                 Age: ${petAge} years
-                Weight: ${petWeight}
+                Weight: ${petWeight} kg
 
                 Please provide advice for the following categories:
                 1.  **Customized Diet Plan:** Recommendations based on its breed, age, weight, and activity level.
-                2.  **Behavioral Insights:** Articles and tips relevant to its specific behavioral patterns (e.g., for its breed, or general tips).
+                2.  **Behavioral Insights:** Articles and tips relevant to its specific behavioral patterns.
                 3.  **Health Reminders:** Personalized alerts/advice for vaccinations, vet check-ups, and medication.
                 4.  **Training Roadmaps:** Step-by-step training plans adapted to its learning style.
                 5.  **Activity Suggestions:** Ideas for exercises and play tailored to its energy and breed.
 
-                Structure the response clearly with headings for each category.`;
+                Structure the response clearly with headings for each category, using Markdown for formatting (e.g., **bold**, *italic*, lists, headings like ## and ###).`;
 
                 const payload = {
                     contents: [{
@@ -1092,7 +1092,7 @@
                         parts: [{ text: prompt }]
                     }],
                     generationConfig: {
-                        responseMimeType: "text/plain", // Changed from "text/markdown" to "text/plain"
+                        responseMimeType: "text/markdown", // Changed back to "text/markdown"
                     }
                 };
 
@@ -1124,7 +1124,7 @@
                     result.candidates[0].content && result.candidates[0].content.parts &&
                     result.candidates[0].content.parts.length > 0) {
                     const text = result.candidates[0].content.parts[0].text;
-                    personalizedContentText.textContent = text; // Changed from innerHTML to textContent
+                    personalizedContentText.innerHTML = convertMarkdownToHtml(text); // Changed back to innerHTML and using converter
                 } else {
                     personalizedContentText.innerHTML = '<p class="text-red-600">Could not get personalized advice. The AI response was empty or unexpected.</p>';
                     console.error('Unexpected API response structure or empty content:', result);
@@ -1142,7 +1142,45 @@
         });
     }
 
-    // Removed the convertMarkdownToHtml function as markdown is no longer requested from the API.
+    // Basic Markdown to HTML conversion (for simple markdown like **bold**, *italic*, lists, headings)
+    // For full markdown support, consider a library like 'marked.js'
+    function convertMarkdownToHtml(markdown) {
+        let html = markdown;
+        // Convert headings: # -> h1, ## -> h2, ### -> h3
+        html = html.replace(/^### (.*$)/gim, '<h3>$1</h3>');
+        html = html.replace(/^## (.*$)/gim, '<h2>$1</h2>');
+        html = html.replace(/^# (.*$)/gim, '<h1>$1</h1>');
+
+        // Convert bold: **text**
+        html = html.replace(/\*\*(.*?)\*\*/gim, '<strong>$1</strong>');
+        // Convert italic: *text*
+        html = html.replace(/\*(.*?)\*/gim, '<em>$1</em>');
+
+        // Convert unordered lists: - item
+        html = html.replace(/^\s*[-\*]\s(.*$)/gim, '<li>$1</li>');
+        // If there are list items, ensure they are wrapped in <ul>
+        if (html.includes('<li>') && !html.includes('<ul>')) {
+            // This regex tries to find contiguous blocks of <li> and wrap them
+            html = html.replace(/(<li>.*?<\/li>\n?)+/gs, '<ul>$&</ul>');
+        }
+
+        // Convert horizontal rules
+        html = html.replace(/^-{3,}$/gim, '<hr>');
+
+        // Convert paragraphs: wrap lines not already in block tags
+        html = html.split('\n').map(line => {
+            // Check if the line is not empty and doesn't start with a known HTML block tag or list item
+            if (line.trim() !== '' && !line.match(/<\/?(h[1-6]|ul|li|strong|em|p|hr)>/i) && !line.match(/^\s*[-\*]\s/)) {
+                return `<p>${line.trim()}</p>`;
+            }
+            return line;
+        }).join('');
+
+        // Clean up multiple <p> tags on the same line if they resulted from split/join
+        html = html.replace(/<\/p><p>/g, '');
+
+        return html;
+    }
 
 
     // Initial section to show on page load - will be overridden by onAuthStateChanged if user logged in
