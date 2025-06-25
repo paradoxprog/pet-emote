@@ -1092,7 +1092,7 @@
                         parts: [{ text: prompt }]
                     }],
                     generationConfig: {
-                        responseMimeType: "text/markdown", // Request markdown for formatted output
+                        responseMimeType: "text/plain", // Changed from "text/markdown" to "text/plain"
                     }
                 };
 
@@ -1124,12 +1124,7 @@
                     result.candidates[0].content && result.candidates[0].content.parts &&
                     result.candidates[0].content.parts.length > 0) {
                     const text = result.candidates[0].content.parts[0].text;
-                    // For text/markdown, we need to convert markdown to HTML for display.
-                    // A simple way is to use a markdown parser library or manually convert.
-                    // For this simple case, we'll just set innerHTML directly, assuming
-                    // Gemini output will be reasonable HTML or plain text.
-                    // If complex markdown is expected, a library like 'marked' would be needed.
-                    personalizedContentText.innerHTML = convertMarkdownToHtml(text); // Use a helper function
+                    personalizedContentText.textContent = text; // Changed from innerHTML to textContent
                 } else {
                     personalizedContentText.innerHTML = '<p class="text-red-600">Could not get personalized advice. The AI response was empty or unexpected.</p>';
                     console.error('Unexpected API response structure or empty content:', result);
@@ -1147,37 +1142,7 @@
         });
     }
 
-    // Basic Markdown to HTML conversion (for simple markdown like **bold**, *italic*, lists, headings)
-    // For full markdown support, consider a library like 'marked.js'
-    function convertMarkdownToHtml(markdown) {
-        let html = markdown;
-        // Convert headings: # -> h1, ## -> h2, ### -> h3
-        html = html.replace(/^### (.*$)/gim, '<h3>$1</h3>');
-        html = html.replace(/^## (.*$)/gim, '<h2>$1</h2>');
-        html = html.replace(/^# (.*$)/gim, '<h1>$1</h1>');
-
-        // Convert bold: **text**
-        html = html.replace(/\*\*(.*?)\*\*/gim, '<strong>$1</strong>');
-        // Convert italic: *text*
-        html = html.replace(/\*(.*?)\*/gim, '<em>$1</em>');
-
-        // Convert unordered lists: - item
-        html = html.replace(/^\s*\-\s(.*$)/gim, '<li>$1</li>');
-        if (html.includes('<li>') && !html.includes('<ul>')) { // Wrap in ul if li exists and not already wrapped
-            html = `<ul>${html}</ul>`;
-        }
-        // Basic paragraph wrapping: ensure text lines not already wrapped are in <p> tags
-        // This is a simplified approach and might need refinement for complex markdown
-        html = html.split('\n').map(line => {
-            // Check if the line is not empty and doesn't start with a known HTML tag or list item
-            if (line.trim() !== '' && !line.match(/<\/?(h[1-6]|ul|li|strong|em|p)>/i) && !line.match(/^\s*[-\*]\s/)) {
-                return `<p>${line.trim()}</p>`;
-            }
-            return line;
-        }).join('');
-
-        return html;
-    }
+    // Removed the convertMarkdownToHtml function as markdown is no longer requested from the API.
 
 
     // Initial section to show on page load - will be overridden by onAuthStateChanged if user logged in
