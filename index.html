@@ -555,7 +555,7 @@
 <header>
     <div class="logo-container">
         <!-- New Logo: Placeholder JPEG for a paw print -->
-        <img src="logo.jpg" alt="Pet'emote Logo" class="logo" />
+        <img src="https://placehold.co/90x90/10b981/ffffff?text=🐾" alt="Pet'emote Logo" class="logo" />
         <h1 class="site-title">Pet'emote</h1>
     </div>
     <nav>
@@ -675,19 +675,33 @@
     <p>&copy; 2025 Pet'emote. All rights reserved.</p>
 </footer>
 
-<script type="module">
-    // Firebase SDK imports
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-    import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signInAnonymously, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-    import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+<script>
+    // --- Firebase Configuration ---
+    const firebaseConfig = {
+      apiKey: "AIzaSyAcNOMZNSC5vmhb4vgFP4Rr1KQH0hCD1iY",
+      authDomain: "pet-emote.firebaseapp.com",
+      projectId: "pet-emote",
+      storageBucket: "pet-emote.firebasestorage.app",
+      messagingSenderId: "560806298260",
+      appId: "1:560806298260:web:8724cda11543d877d52a81",
+      measurementId: "G-Q28JF0E294"
+    };
 
-    // Modal Elements - Declared outside DOMContentLoaded to be accessible globally
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    const database = firebase.database();
+    const auth = firebase.auth(); // Initialize Firebase Auth
+
+    // Modal Elements (Global scope for accessibility)
     const myModal = document.getElementById('myModal');
     const modalMessage = document.getElementById('modalMessage');
     const closeButton = document.querySelector('.close-button');
     const modalOkButton = document.getElementById('modalOkButton');
 
-    // Function to show modal - also global
+    // Function to show modal
     function showModal(message) {
         if (modalMessage) {
             modalMessage.textContent = message;
@@ -697,7 +711,7 @@
         }
     }
 
-    // Function to hide modal - also global
+    // Function to hide modal
     function hideModal() {
         if (myModal) {
             myModal.style.display = 'none';
@@ -713,289 +727,260 @@
         }
     };
 
+    // Section navigation elements
+    const aboutSection = document.getElementById('about');
+    const howItWorksSection = document.getElementById('how-it-works');
+    const loginSection = document.getElementById('login');
+    const signupSection = document.getElementById('signup');
 
-    document.addEventListener('DOMContentLoaded', async () => {
-        // --- Firebase Initialization ---
-        const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-petemote-app-id';
-        const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {};
+    const navLinkAbout = document.getElementById('link-about');
+    const navLinkHowItWorks = document.getElementById('link-how-it-works');
+    const navLinkLogin = document.getElementById('link-login');
+    const navLinkSignup = document.getElementById('link-signup');
+    const allNavLinks = [navLinkAbout, navLinkHowItWorks, navLinkLogin, navLinkSignup];
 
-        let app;
-        let auth;
-        let db;
-        let userId = null;
-
-        try {
-            app = initializeApp(firebaseConfig);
-            auth = getAuth(app);
-            db = getFirestore(app);
-
-            // Authenticate with custom token if available, otherwise anonymously
-            if (typeof __initial_auth_token !== 'undefined') {
-                await signInWithCustomToken(auth, __initial_auth_token);
-            } else {
-                await signInAnonymously(auth);
+    function showSection(sectionToShow, activeNavLink) {
+        // Hide all sections
+        [aboutSection, howItWorksSection, loginSection, signupSection].forEach(s => {
+            if (s) {
+                s.style.display = 'none';
+                s.classList.remove('active');
             }
+        });
+        // Remove active class from all nav links
+        allNavLinks.forEach(link => {
+            if (link) link.classList.remove('active-nav-link');
+        });
 
-            // Listen for auth state changes to set userId
-            onAuthStateChanged(auth, (user) => {
-                if (user) {
-                    userId = user.uid;
-                    console.log("Firebase initialized. User ID:", userId);
-                } else {
-                    userId = crypto.randomUUID(); // Fallback for truly anonymous or logged out state
-                    console.log("Firebase initialized. Anonymous session. Generated User ID:", userId);
-                }
-            });
-
-        } catch (error) {
-            console.error("Firebase initialization error:", error);
-            showModal("Error initializing Firebase. Please check console for details.");
+        // Show the requested section
+        if (sectionToShow) {
+            sectionToShow.style.display = 'block';
+            // Trigger reflow for animation
+            void sectionToShow.offsetWidth;
+            sectionToShow.classList.add('active');
         }
-
-        // --- UI Elements ---
-        const sections = {
-            'about': document.getElementById('about'),
-            'how-it-works': document.getElementById('how-it-works'),
-            'login': document.getElementById('login'),
-            'signup': document.getElementById('signup')
-        };
-
-        const navLinks = {
-            'link-about': document.getElementById('link-about'),
-            'link-how-it-works': document.getElementById('link-how-it-works'),
-            'link-login': document.getElementById('link-login'),
-            'link-signup': document.getElementById('link-signup')
-        };
-
-
-        function showSection(sectionId) {
-            for (const id in sections) {
-                if (sections.hasOwnProperty(id) && sections[id]) {
-                    sections[id].style.display = 'none';
-                    sections[id].classList.remove('active');
-                }
-            }
-            if (sections[sectionId]) {
-                sections[sectionId].style.display = 'block';
-                // Trigger reflow for animation
-                void sections[sectionId].offsetWidth;
-                sections[sectionId].classList.add('active');
-            }
-
-            for (const id in navLinks) {
-                if (navLinks.hasOwnProperty(id) && navLinks[id]) {
-                    navLinks[id].classList.remove('active-nav-link');
-                }
-            }
-            if (navLinks[`link-${sectionId}`]) {
-                navLinks[`link-${sectionId}`].classList.add('active-nav-link');
-            }
+        // Set active class for the requested nav link
+        if (activeNavLink) {
+            activeNavLink.classList.add('active-nav-link');
         }
+    }
 
-        // Navigation event listeners
-        if (navLinks['link-about']) {
-            navLinks['link-about'].addEventListener('click', (e) => {
-                e.preventDefault();
-                showSection('about');
-            });
-        }
-        if (navLinks['link-how-it-works']) {
-            navLinks['link-how-it-works'].addEventListener('click', (e) => {
-                e.preventDefault();
-                showSection('how-it-works');
-            });
-        }
-        if (navLinks['link-login']) {
-            navLinks['link-login'].addEventListener('click', (e) => {
-                e.preventDefault();
-                showSection('login');
-            });
-        }
-        if (navLinks['link-signup']) {
-            navLinks['link-signup'].addEventListener('click', (e) => {
-                e.preventDefault();
-                showSection('signup');
-            });
-        }
+    // Navigation event listeners
+    if (navLinkAbout) {
+        navLinkAbout.addEventListener('click', (e) => {
+            e.preventDefault();
+            showSection(aboutSection, navLinkAbout);
+        });
+    }
+    if (navLinkHowItWorks) {
+        navLinkHowItWorks.addEventListener('click', (e) => {
+            e.preventDefault();
+            showSection(howItWorksSection, navLinkHowItWorks);
+        });
+    }
+    if (navLinkLogin) {
+        navLinkLogin.addEventListener('click', (e) => {
+            e.preventDefault();
+            showSection(loginSection, navLinkLogin);
+        });
+    }
+    if (navLinkSignup) {
+        navLinkSignup.addEventListener('click', (e) => {
+            e.preventDefault();
+            showSection(signupSection, navLinkSignup);
+        });
+    }
 
-        // Dark Mode Toggle Logic
-        const darkToggle = document.getElementById('darkToggle');
-        const body = document.body;
+    // Dark mode toggle
+    const darkToggle = document.getElementById('darkToggle');
 
-        // Check for saved theme preference
-        const savedTheme = localStorage.getItem('theme');
-        if (savedTheme === 'dark') {
-            body.classList.add('dark');
+    function applyDarkMode(isDark) {
+        if (isDark) {
+            document.body.classList.add('dark');
             if (darkToggle) darkToggle.checked = true;
+            localStorage.setItem('petEmoteDarkMode', 'enabled'); // Unique key for this app
+        } else {
+            document.body.classList.remove('dark');
+            if (darkToggle) darkToggle.checked = false;
+            localStorage.removeItem('petEmoteDarkMode');
         }
+    }
 
-        if (darkToggle) {
-            darkToggle.addEventListener('change', () => {
-                if (darkToggle.checked) {
-                    body.classList.add('dark');
-                    localStorage.setItem('theme', 'dark');
-                } else {
-                    body.classList.remove('dark');
-                    localStorage.setItem('theme', 'light');
-                }
+    // Initialize toggle state from localStorage on page load
+    applyDarkMode(localStorage.getItem('petEmoteDarkMode') === 'enabled');
+
+    if (darkToggle) {
+        darkToggle.addEventListener('change', () => {
+            applyDarkMode(darkToggle.checked);
+        });
+    }
+
+    // --- Firebase Authentication Logic ---
+    // Helper to store user data in Realtime Database
+    async function saveUserProfile(uid, email, displayName, providerId) {
+        if (!database) {
+            console.error("Firebase Realtime Database not initialized.");
+            return;
+        }
+        try {
+            const userRef = database.ref(`users/${uid}`);
+            await userRef.set({
+                uid: uid,
+                email: email,
+                displayName: displayName || 'User', // Use 'User' if displayName is null
+                providerId: providerId,
+                lastSignInTime: firebase.database.ServerValue.TIMESTAMP // Use server timestamp
             });
+            console.log("User profile saved to Realtime Database:", uid);
+        } catch (error) {
+            console.error("Error saving user profile to Realtime Database:", error);
+            showModal("Error saving user profile data.");
         }
+    }
 
-        // --- Login/Signup Form Logic (Firebase Email/Password) ---
-        const loginForm = document.getElementById('loginForm');
-        const signupForm = document.getElementById('signupForm');
-        const switchToSignup = document.getElementById('switchToSignup');
-        const switchToLogin = document.getElementById('switchToLogin');
+    // Login form logic
+    const loginForm = document.getElementById('loginForm');
+    if (loginForm) {
+        loginForm.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const emailInput = document.getElementById('loginEmail');
+            const passwordInput = document.getElementById('loginPassword');
 
-        // Link to switch from login to signup
-        if (switchToSignup) {
-            switchToSignup.addEventListener('click', (e) => {
-                e.preventDefault();
-                showSection('signup');
-            });
-        }
+            const email = emailInput.value.trim();
+            const password = passwordInput.value;
 
-        // Link to switch from signup to login
-        if (switchToLogin) {
-            switchToLogin.addEventListener('click', (e) => {
-                e.preventDefault();
-                showSection('login');
-            });
-        }
-
-        // Helper to store user data in Firestore
-        async function saveUserProfile(uid, email, displayName, providerId) {
-            if (!db) {
-                console.error("Firestore not initialized.");
+            if (!email || !password) {
+                showModal('Email and password are required.');
                 return;
             }
-            try {
-                // Store user data in a private collection for this app and user
-                const userDocRef = doc(db, `artifacts/${appId}/users/${uid}/userProfile`, 'main');
-                await setDoc(userDocRef, {
-                    uid: uid,
-                    email: email,
-                    displayName: displayName,
-                    providerId: providerId,
-                    lastSignInTime: new Date().toISOString()
-                }, { merge: true }); // Use merge to avoid overwriting other fields if they exist
-                console.log("User profile saved to Firestore:", uid);
-            } catch (error) {
-                console.error("Error saving user profile to Firestore:", error);
-                showModal("Error saving user profile data.");
-            }
-        }
-
-        // Handle login form submission
-        if (loginForm) {
-            loginForm.addEventListener('submit', async (e) => {
-                e.preventDefault();
-                if (!auth) { showModal("Firebase Auth not initialized."); return; }
-                const email = document.getElementById('loginEmail').value;
-                const password = document.getElementById('loginPassword').value;
-
-                try {
-                    const userCredential = await signInWithEmailAndPassword(auth, email, password);
-                    const user = userCredential.user;
-                    await saveUserProfile(user.uid, user.email, user.displayName || 'User', 'emailPassword');
-                    showModal(`Welcome back, ${user.displayName || user.email}! Redirecting...`);
-                    // Redirect to your main app page
-                    window.location.href = 'homepage.html';
-                } catch (error) {
-                    console.error("Email/Password Login Error:", error);
-                    let errorMessage = "Login failed. Please check your email and password.";
-                    if (error.code === 'auth/user-not-found') {
-                        errorMessage = "No account found with this email. Please sign up.";
-                    } else if (error.code === 'auth/wrong-password') {
-                        errorMessage = "Incorrect password.";
-                    }
-                    showModal(errorMessage);
-                }
-            });
-        }
-
-        // Handle signup form submission
-        if (signupForm) {
-            signupForm.addEventListener('submit', async (e) => {
-                e.preventDefault();
-                if (!auth) { showModal("Firebase Auth not initialized."); return; }
-                const fullName = document.getElementById('signupName').value;
-                const email = document.getElementById('signupEmail').value;
-                const password = document.getElementById('signupPassword').value;
-                const confirmPassword = document.getElementById('confirmPassword').value;
-
-                if (password !== confirmPassword) {
-                    showModal("Passwords do not match.");
-                    return;
-                }
-                if (password.length < 6) {
-                    showModal("Password must be at least 6 characters long.");
-                    return;
-                }
-
-                try {
-                    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-                    const user = userCredential.user;
-                    await user.updateProfile({
-                        displayName: fullName
-                    });
-                    await saveUserProfile(user.uid, user.email, fullName, 'emailPassword');
-                    showModal(`Account created successfully for ${fullName}! Please log in.`);
-                    // Optionally, directly log in or redirect to login page
-                    showSection('login');
-                } catch (error) {
-                    console.error("Email/Password Signup Error:", error);
-                    let errorMessage = "Account creation failed.";
-                    if (error.code === 'auth/email-already-in-use') {
-                        errorMessage = "This email is already in use.";
-                    } else if (error.code === 'auth/weak-password') {
-                        errorMessage = "Password is too weak. Please choose a stronger one.";
-                    }
-                    showModal(errorMessage);
-                }
-            });
-        }
-
-        // --- Google Sign-In Logic ---
-        const googleLoginButton = document.getElementById('googleLoginButton');
-        const googleSignupButton = document.getElementById('googleSignupButton');
-        const googleProvider = new GoogleAuthProvider();
-
-        async function handleGoogleSignIn(e) {
-            e.preventDefault();
-            if (!auth) { showModal("Firebase Auth not initialized."); return; }
 
             try {
-                const result = await signInWithPopup(auth, googleProvider);
-                const user = result.user;
-                await saveUserProfile(user.uid, user.email, user.displayName, 'google.com');
-                showModal(`Welcome, ${user.displayName || user.email}! Redirecting...`);
-                // Redirect to your main app page
+                const userCredential = await auth.signInWithEmailAndPassword(email, password);
+                const user = userCredential.user;
+                await saveUserProfile(user.uid, user.email, user.displayName, 'emailPassword');
+                showModal(`Welcome back, ${user.displayName || user.email}! Redirecting to the app...`);
+                // Redirect to your main application page
                 window.location.href = 'homepage.html';
             } catch (error) {
-                console.error("Google Sign-In Error:", error);
-                let errorMessage = "Failed to sign in with Google.";
-                if (error.code === 'auth/popup-closed-by-user') {
-                    errorMessage = "Google Sign-In was cancelled.";
-                } else if (error.code === 'auth/cancelled-popup-request') {
-                    errorMessage = "Sign-in already in progress. Please wait or try again.";
-                } else if (error.code === 'auth/account-exists-with-different-credential') {
-                    errorMessage = "An account with this email already exists using a different sign-in method. Please login with that method.";
+                console.error("Email/Password Login Error:", error);
+                let errorMessage = "Login failed. Please check your email and password.";
+                if (error.code === 'auth/user-not-found') {
+                    errorMessage = "No account found with this email. Please sign up.";
+                } else if (error.code === 'auth/wrong-password') {
+                    errorMessage = "Incorrect password.";
+                } else if (error.code === 'auth/invalid-email') {
+                    errorMessage = "Invalid email format.";
                 }
                 showModal(errorMessage);
             }
-        }
+        });
+    }
 
-        if (googleLoginButton) {
-            googleLoginButton.addEventListener('click', handleGoogleSignIn);
-        }
-        if (googleSignupButton) {
-            googleSignupButton.addEventListener('click', handleGoogleSignIn);
-        }
+    // Signup form logic
+    const signupForm = document.getElementById('signupForm');
+    if (signupForm) {
+        signupForm.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const nameInput = document.getElementById('signupName');
+            const emailInput = document.getElementById('signupEmail');
+            const passwordInput = document.getElementById('signupPassword');
+            const confirmPasswordInput = document.getElementById('confirmPassword');
 
-        // Show about section on load by default
-        showSection('about');
-    });
+            const fullName = nameInput.value.trim();
+            const email = emailInput.value.trim();
+            const password = passwordInput.value;
+            const confirmPassword = confirmPasswordInput.value;
+
+            if (!fullName || !email || !password || !confirmPassword) {
+                showModal('All fields are required.');
+                return;
+            }
+            if (password.length < 6) {
+                showModal('Password must be at least 6 characters long.');
+                return;
+            }
+            if (password !== confirmPassword) {
+                showModal('Passwords do not match.');
+                return;
+            }
+
+            try {
+                const userCredential = await auth.createUserWithEmailAndPassword(email, password);
+                const user = userCredential.user;
+                await user.updateProfile({ displayName: fullName }); // Set display name in Auth
+                await saveUserProfile(user.uid, user.email, fullName, 'emailPassword');
+                showModal(`Account created successfully for ${fullName}! Please log in.`);
+                signupForm.reset();
+                showSection(loginSection, navLinkLogin); // Switch to login section
+            } catch (error) {
+                console.error("Email/Password Signup Error:", error);
+                let errorMessage = "Account creation failed.";
+                if (error.code === 'auth/email-already-in-use') {
+                    errorMessage = "This email is already in use.";
+                } else if (error.code === 'auth/weak-password') {
+                    errorMessage = "Password is too weak. Please choose a stronger one.";
+                } else if (error.code === 'auth/invalid-email') {
+                    errorMessage = "Invalid email format.";
+                }
+                showModal(errorMessage);
+            }
+        });
+    }
+
+    // Google Sign-In Logic
+    const googleLoginButton = document.getElementById('googleLoginButton');
+    const googleSignupButton = document.getElementById('googleSignupButton');
+    const googleProvider = new firebase.auth.GoogleAuthProvider();
+
+    async function handleGoogleSignIn(e) {
+        e.preventDefault();
+        try {
+            const result = await auth.signInWithPopup(googleProvider);
+            const user = result.user;
+            await saveUserProfile(user.uid, user.email, user.displayName, 'google.com');
+            showModal(`Welcome, ${user.displayName || user.email}! Redirecting to the app...`);
+            window.location.href = 'homepage.html';
+        } catch (error) {
+            console.error("Google Sign-In Error:", error);
+            let errorMessage = "Failed to sign in with Google.";
+            if (error.code === 'auth/popup-closed-by-user') {
+                errorMessage = "Google Sign-In was cancelled.";
+            } else if (error.code === 'auth/cancelled-popup-request') {
+                errorMessage = "Sign-in already in progress. Please wait or try again.";
+            } else if (error.code === 'auth/account-exists-with-different-credential') {
+                errorMessage = "An account with this email already exists using a different sign-in method. Please login with that method.";
+            }
+            showModal(errorMessage);
+        }
+    }
+
+    if (googleLoginButton) {
+        googleLoginButton.addEventListener('click', handleGoogleSignIn);
+    }
+    if (googleSignupButton) {
+        googleSignupButton.addEventListener('click', handleGoogleSignIn);
+    }
+
+    // Links to switch between login and signup sections
+    const switchToSignup = document.getElementById('switchToSignup');
+    const switchToLogin = document.getElementById('switchToLogin');
+
+    if (switchToSignup) {
+        switchToSignup.addEventListener('click', (e) => {
+            e.preventDefault();
+            showSection(signupSection, navLinkSignup);
+        });
+    }
+
+    if (switchToLogin) {
+        switchToLogin.addEventListener('click', (e) => {
+            e.preventDefault();
+            showSection(loginSection, navLinkLogin);
+        });
+    }
+
+    // Show about section on load by default
+    showSection(aboutSection, navLinkAbout);
 </script>
 </body>
 </html>
