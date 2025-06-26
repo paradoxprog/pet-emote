@@ -656,6 +656,39 @@
             color: #2563eb; /* Blue-600 */
             text-decoration: underline;
         }
+
+        /* Specific styles for Personalized Content inputs and text to ensure dark mode visibility */
+        #personalized-content input[type="text"],
+        #personalized-content input[type="number"] {
+            color: var(--text-color-light); /* Default color for inputs */
+            background-color: var(--bg-light); /* Default background for inputs */
+            border-color: var(--border-color-light);
+        }
+
+        body.dark #personalized-content input[type="text"],
+        body.dark #personalized-content input[type="number"] {
+            color: var(--text-color-dark); /* Dark mode text color for inputs */
+            background-color: var(--card-bg-dark); /* Dark mode background for inputs */
+            border-color: var(--border-color-dark);
+        }
+
+        /* Placeholder text color for inputs */
+        #personalized-content input::placeholder {
+            color: var(--text-color-light); /* Default placeholder color */
+            opacity: 0.7; /* Make it slightly transparent for better contrast */
+        }
+
+        body.dark #personalized-content input::placeholder {
+            color: var(--text-color-dark); /* Dark mode placeholder color */
+            opacity: 0.7;
+        }
+
+        #personalizedContentText {
+            color: var(--text-color-light); /* Default color */
+        }
+        body.dark #personalizedContentText {
+            color: var(--text-color-dark); /* Dark mode color */
+        }
     </style>
 </head>
 <body>
@@ -663,7 +696,7 @@
 <header>
     <div class="logo-container">
         <!-- New Logo: Placeholder JPEG for a paw print -->
-        <img src="logo.jpg" alt="Pet'emote Logo" class="logo" />
+        <img src="https://placehold.co/90x90/10b981/ffffff?text=🐾" alt="Pet'emote Logo" class="logo" />
         <h1 class="site-title">Pet'emote</h1>
     </div>
     <nav>
@@ -727,19 +760,19 @@
         <div class="bg-blue-50 p-6 rounded-lg text-left shadow-inner border border-blue-200 mb-6">
             <div class="mb-4">
                 <label for="petName" class="block text-gray-700 text-sm font-bold mb-2">Pet's Name:</label>
-                <input type="text" id="petName" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline rounded-md" placeholder="e.g., Buddy">
+                <input type="text" id="petName" class="shadow appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline rounded-md" placeholder="e.g., Buddy">
             </div>
             <div class="mb-4">
                 <label for="petBreed" class="block text-gray-700 text-sm font-bold mb-2">Pet's Breed (or type):</label>
-                <input type="text" id="petBreed" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline rounded-md" placeholder="e.g., Golden Retriever, Siamese">
+                <input type="text" id="petBreed" class="shadow appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline rounded-md" placeholder="e.g., Golden Retriever, Siamese">
             </div>
             <div class="mb-4">
                 <label for="petAge" class="block text-gray-700 text-sm font-bold mb-2">Pet's Age (in years):</label>
-                <input type="number" id="petAge" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline rounded-md" placeholder="e.g., 3">
+                <input type="number" id="petAge" class="shadow appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline rounded-md" placeholder="e.g., 3">
             </div>
             <div class="mb-6">
                 <label for="petWeight" class="block text-gray-700 text-sm font-bold mb-2">Pet's Weight (in kg/lbs):</label>
-                <input type="text" id="petWeight" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline rounded-md" placeholder="e.g., 25kg, 55lbs">
+                <input type="text" id="petWeight" class="shadow appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline rounded-md" placeholder="e.g., 25kg, 55lbs">
             </div>
             <button id="generateContentButton" class="bg-emerald-500 text-white py-3 px-6 rounded-lg font-bold shadow-md hover:bg-emerald-600 transition-colors duration-300 transform hover:scale-105 active:scale-95 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-opacity-50 w-full">
                 Generate Personalized Advice
@@ -749,7 +782,7 @@
 
         <div id="personalizedResultDisplay" class="bg-blue-50 p-6 rounded-lg text-left shadow-inner border border-blue-200 mt-6">
             <h3 class="text-xl font-semibold text-blue-800 mb-2">Your Personalized Pet Advice:</h3>
-            <div id="personalizedContentText" class="text-gray-700 leading-relaxed">
+            <div id="personalizedContentText" class="leading-relaxed">
                 <p>Enter your pet's details above and click 'Generate Personalized Advice' to see customized recommendations appear here.</p>
             </div>
         </div>
@@ -1172,7 +1205,7 @@
 
             } catch (error) {
                 console.error('Error analyzing image (network or parsing):', error);
-                showModal('A network error or parsing error occurred while analyzing the image. Please check your internet connection or console for more details.');
+                showModal('A network error or parsing error occurred. Please check your internet connection or console for more details.');
                 emotionText.textContent = 'Analysis failed. Please try again.';
             } finally {
                 loadingSpinner.style.display = 'none'; // Hide loading spinner
@@ -1293,7 +1326,7 @@
                     <li><strong>Soft, Relaxed Eyes:</strong> Often squinted or almond-shaped, indicating comfort and trust.</li>
                     <li><strong>Hard Stare/Wide Eyes (Whale Eye):</strong> Direct, unblinking stare or showing the whites of their eyes can indicate tension, fear, or a challenge.</li>
                     <li><strong>Ears Forward/Alert:</strong> Sign of interest or focus.</li>
-                    <li><strong>Ears Pinned Back:</strong> Can mean fear, anxiety, or aggression, depending on other body cues.</li>
+                    <li><strong>Ears Pinned Back:</b> Can mean fear, anxiety, or aggression, depending on other body cues.</li>
                     <li><strong>Relaxed Mouth/Slightly Open:</strong> A happy, comfortable dog, possibly panting gently.</li>
                     <li><strong>Licking Lips (without food present):</strong> A common stress signal, often seen when a dog is uncomfortable or anxious.</li>
                     <li><strong>Yawning (without being tired):</strong> Another common stress signal, similar to lip-licking.</li>
@@ -1324,7 +1357,6 @@
             title: "Feline Communication Masterclass: Interpreting Meows, Purrs, Ear Positions, and Tail Movements",
             summary: "Cats communicate in mysterious ways, but with a little knowledge, you can become a feline whisperer! Discover the nuances of meows, purrs, hisses, and growls, as well as the secret language of their tails, ears, and eyes. Understanding these cues will help you respond to your cat's desires and discomforts.",
             content: `
-                <h3>Feline Communication Masterclass: Interpreting Meows, Purrs, Ear Positions, and Tail Movements</h3>
                 <p>Cats are often considered enigmatic, but they are constantly communicating with us through a rich array of vocalizations, facial expressions, and body postures. Understanding these subtle cues can deepen your bond and help you better cater to your cat's needs.</p>
 
                 <h4>The Tail: A Cat's Emotional Barometer</h4>
@@ -1349,7 +1381,7 @@
                 <ul>
                     <li><strong>Slow Blink:</strong> A cat's "I love you." If your cat slow-blinks at you, try slow-blinking back to reciprocate.</li>
                     <li><strong>Dilated Pupils (Wide):</strong> Can indicate fear, excitement, playfulness, or aggression. Context is key.</li>
-                    <li><strong>Constricted Pupils (Slit):</strong> Often a sign of aggression or discomfort, especially in bright light.</li>
+                    <li><strong>Constricted Pupils (Slit):</b> Often a sign of aggression or discomfort, especially in bright light.</li>
                     <li><strong>Direct Stare:</strong> Can be challenging or a sign of intense focus. Averted gaze is generally more friendly.</li>
                 </ul>
 
@@ -1369,7 +1401,7 @@
                     <li><strong>Rubbing Against You (Bunting):</strong> Affectionate greeting, marking you with their scent.</li>
                     <li><strong>Kneading (Making Biscuits):</strong> A sign of contentment and comfort, harking back to kittenhood nursing.</li>
                     <li><strong>Arched Back, Hacked Hair:</strong> Defensive posture, trying to look larger and more intimidating.</li>
-                    <li><strong>Rolling on Back (Exposing Belly):</strong> If relaxed, it's a sign of trust and an invitation for a gentle rub (but often not a full belly rub!). If tense, it's a defensive posture.</li>
+                    <li><strong>Rolling on Back (Exposing Belly):</b> If relaxed, it's a sign of trust and an invitation for a gentle rub (but often not a full belly rub!). If tense, it's a defensive posture.</li>
                     <li><strong>Crouched Low (Wagging Tail or Still):</strong> Predatory behavior, ready to pounce.</li>
                 </ul>
 
@@ -1380,7 +1412,6 @@
             title: "Optimal Nutrition for All Life Stages: Choosing the Right Diet for Puppies/Kittens, Adults, and Seniors",
             summary: "A balanced diet is the cornerstone of a healthy life for your pet. This comprehensive guide explores nutritional requirements for puppies/kittens, adult, and senior pets. Learn how to choose the best food, understand ingredient labels, and manage portion sizes to keep your furry friend thriving.",
             content: `
-                <h3>Optimal Nutrition for All Life Stages: Choosing the Right Diet for Puppies/Kittens, Adults, and Seniors</h3>
                 <p>Just like humans, pets have varying nutritional needs throughout their lives. Providing the right diet at each stage is crucial for their growth, energy, and overall health. This guide breaks down the dietary considerations for puppies/kittens, adult pets, and seniors.</p>
 
                 <h4>1. Puppies & Kittens (Growth Stage)</h4>
@@ -1420,7 +1451,7 @@
                 <h4>Understanding Ingredient Labels</h4>
                 <p>Regardless of the life stage, always look for:</p>
                 <ul>
-                    <li><strong>Meat as the First Ingredient:</strong> Indicates a good source of protein.</li>
+                    <li><strong>Meat as the First Ingredient:</b> Indicates a good source of protein.</li>
                     <li><strong>Whole Grains (if included):</strong> Such as brown rice, oats, barley, rather than corn or wheat fillers.</li>
                     <li><strong>Limited Fillers, Artificial Colors, and Preservatives:</strong> These offer little to no nutritional value.</li>
                 </ul>
@@ -1431,18 +1462,16 @@
             title: "Effective Positive Reinforcement Training: Building Strong Bonds Through Reward-Based Techniques",
             summary: "Build a strong, trusting bond with your pet through positive reinforcement. This method focuses on rewarding desired behaviors, making training a fun and positive experience. Explore techniques for teaching commands, addressing common behavioral issues, and fostering a well-behaved companion.",
             content: `
-                <h3>Effective Positive Reinforcement Training: Building Strong Bonds Through Reward-Based Techniques</h3>
                 <p>Positive reinforcement is a powerful and humane training method that focuses on rewarding desired behaviors, making it more likely your pet will repeat them. This approach builds trust, strengthens your bond, and makes learning enjoyable for both you and your furry friend.</p>
 
                 <h4>What is Positive Reinforcement?</h4>
                 <p>At its core, positive reinforcement involves adding something desirable (a "reinforcer") to the environment immediately after a desired behavior occurs. This makes the pet associate the behavior with a positive outcome, thus increasing the likelihood of that behavior happening again.</p>
-                <p><strong>Key Principles:</strong></p>
                 <ol>
                     <li><strong>Timeliness:</strong> The reward must be given within 1-3 seconds of the behavior to create a clear association.</li>
                     <li><strong>Consistency:</strong> Everyone in the household should use the same cues and rewards for the same behaviors.</li>
                     <li><strong>High-Value Rewards:</strong> Use treats, praise, toys, or petting that your pet truly loves.</li>
                     <li><strong>Short Sessions:</strong> Keep training sessions brief (5-10 minutes) and fun, especially for puppies/kittens or easily distracted pets.</li>
-                </ul>
+                </ol>
 
                 <h4>Getting Started: The Basics</h4>
                 <ul>
@@ -1467,7 +1496,6 @@
                 </ul>
 
                 <h4>Building a Strong Bond</h4>
-                <p>Beyond specific commands, positive reinforcement fosters a positive relationship:</p>
                 <ul>
                     <li><strong>Trust:</strong> Your pet learns to trust you as a source of good things.</li>
                     <li><strong>Confidence:</strong> Successful training builds your pet's confidence and reduces anxiety.</li>
@@ -1481,7 +1509,6 @@
             title: "Separation Anxiety Solutions: Strategies to Ease Your Pet's Stress When Left Alone",
             summary: "Does your pet get stressed when you leave? Separation anxiety is a common issue, but there are effective strategies to help your pet feel more secure when alone. Learn about behavioral modifications, environmental enrichment, and when to seek professional help to alleviate your pet's distress.",
             content: `
-                <h3>Separation Anxiety Solutions: Strategies to Ease Your Pet's Stress When Left Alone</h3>
                 <p>Separation anxiety is a common and distressing condition for many pets, particularly dogs, where they experience excessive anxiety when separated from their guardians. Symptoms can range from destructive behavior and excessive vocalization to inappropriate urination/defecation. Addressing separation anxiety requires patience, consistency, and often a multi-faceted approach.</p>
 
                 <h4>Understanding the Cause</h4>
@@ -1513,7 +1540,7 @@
                 <p>Keep your arrivals and departures low-key. Excessive fuss can heighten your pet's anxiety.</p>
                 <ul>
                     <li><strong>Ignore for a Few Minutes:</strong> When you arrive home, ignore your pet for the first few minutes until they calm down, then greet them calmly.</li>
-                    <li><strong>No Emotional Farewells:</strong> Don't make a big deal out of leaving. This can increase their anticipation and anxiety.</li>
+                    <li><strong>No Emotional Farewells:</b> Don't make a big deal out of leaving. This can increase their anticipation and anxiety.</li>
                 </ul>
 
                 <h4>When to Seek Professional Help</h4>
