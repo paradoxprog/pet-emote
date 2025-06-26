@@ -9,10 +9,10 @@
     <!-- Poppins Font for consistent design -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        /* Base Variables (Default Theme: Emerald) */
+        /* Variables for Dark Mode */
         :root {
-            --primary-color: #10b981; /* Emerald-500 */
-            --primary-hover: #059669; /* Darker Emerald */
+            --primary-color: #B08EDF; /* Lavender Dream Primary */
+            --primary-hover: #996DD7; /* Darker Lavender Dream */
             --bg-light: #f0f4f8; /* Light blue-gray background */
             --bg-dark: #1a202c; /* Dark slate background */
             --card-bg-light: #ffffff;
@@ -25,104 +25,7 @@
             --shadow-dark: rgba(0, 0, 0, 0.4);
             --header-bg-light: #ffffff;
             --header-bg-dark: #2d3748;
-            --logo-bg-color: #10b981; /* Default logo color */
         }
-
-        /* Theme: Ocean Breeze (Blue/Cyan) */
-        body.theme-ocean-breeze {
-            --primary-color: #0ea5e9; /* Sky-500 */
-            --primary-hover: #0284c7; /* Sky-700 */
-            --bg-light: #e0f2fe; /* Blue-50 */
-            --card-bg-light: #ffffff;
-            --text-color-light: #1f2937; /* Gray-800 */
-            --border-color-light: #bfdbfe; /* Blue-200 */
-            --header-bg-light: #ffffff;
-            --logo-bg-color: #0ea5e9; /* Logo color for this theme */
-        }
-        body.theme-ocean-breeze.dark {
-            --bg-dark: #0f172a; /* Slate-900 */
-            --card-bg-dark: #1e293b; /* Slate-800 */
-            --text-color-dark: #f8fafc; /* Slate-50 */
-            --border-color-dark: #334155; /* Slate-700 */
-            --header-bg-dark: #1e293b;
-        }
-
-        /* Theme: Sunset Glow (Orange/Red) */
-        body.theme-sunset-glow {
-            --primary-color: #f97316; /* Orange-500 */
-            --primary-hover: #ea580c; /* Orange-700 */
-            --bg-light: #fff7ed; /* Orange-50 */
-            --card-bg-light: #ffffff;
-            --text-color-light: #374151; /* Gray-700 */
-            --border-color-light: #fed7aa; /* Orange-200 */
-            --header-bg-light: #ffffff;
-            --logo-bg-color: #f97316; /* Logo color for this theme */
-        }
-        body.theme-sunset-glow.dark {
-            --bg-dark: #1c1917; /* Stone-950 */
-            --card-bg-dark: #292524; /* Stone-900 */
-            --text-color-dark: #fafaf9; /* Stone-50 */
-            --border-color-dark: #44403c; /* Stone-700 */
-            --header-bg-dark: #292524;
-        }
-
-        /* Theme: Lavender Dream (Purple/Pink) */
-        body.theme-lavender-dream {
-            --primary-color: #a855f7; /* Purple-500 */
-            --primary-hover: #9333ea; /* Purple-700 */
-            --bg-light: #f3e8ff; /* Purple-50 */
-            --card-bg-light: #ffffff;
-            --text-color-light: #3f006e; /* Purple-900 */
-            --border-color-light: #d8b4fe; /* Purple-200 */
-            --header-bg-light: #ffffff;
-            --logo-bg-color: #a855f7; /* Logo color for this theme */
-        }
-        body.theme-lavender-dream.dark {
-            --bg-dark: #1e112d; /* Deep Purple */
-            --card-bg-dark: #3a1f4d; /* Darker Purple */
-            --text-color-dark: #fdf4ff; /* Purple-50 */
-            --border-color-dark: #5a2d7d; /* Purple-700 */
-            --header-bg-dark: #3a1f4d;
-        }
-
-        /* Theme: Forest Whisper (Green/Brown - Earthy) */
-        body.theme-forest-whisper {
-            --primary-color: #22c55e; /* Green-500 */
-            --primary-hover: #16a34a; /* Green-700 */
-            --bg-light: #f0fdf4; /* Green-50 */
-            --card-bg-light: #ffffff;
-            --text-color-light: #1e3a24; /* Green-900 */
-            --border-color-light: #dcfce7; /* Green-200 */
-            --header-bg-light: #ffffff;
-            --logo-bg-color: #22c55e; /* Logo color for this theme */
-        }
-        body.theme-forest-whisper.dark {
-            --bg-dark: #0f1a11; /* Dark Greenish Brown */
-            --card-bg-dark: #1f2f21; /* Dark Forest Green */
-            --text-color-dark: #f0fdf4; /* Green-50 */
-            --border-color-dark: #2e4a32; /* Green-700 */
-            --header-bg-dark: #1f2f21;
-        }
-
-        /* Theme: Charcoal Slate (Monochromatic/Dark-leaning) */
-        body.theme-charcoal-slate {
-            --primary-color: #64748b; /* Slate-500 */
-            --primary-hover: #475569; /* Slate-700 */
-            --bg-light: #f1f5f9; /* Slate-100 */
-            --card-bg-light: #ffffff;
-            --text-color-light: #1e293b; /* Slate-900 */
-            --border-color-light: #cbd5e1; /* Slate-300 */
-            --header-bg-light: #ffffff;
-            --logo-bg-color: #64748b; /* Logo color for this theme */
-        }
-        body.theme-charcoal-slate.dark {
-            --bg-dark: #0f172a; /* Slate-900 */
-            --card-bg-dark: #1e293b; /* Slate-800 */
-            --text-color-dark: #f8fafc; /* Slate-50 */
-            --border-color-dark: #334155; /* Slate-700 */
-            --header-bg-dark: #1e293b;
-        }
-
 
         body {
             font-family: 'Poppins', sans-serif;
@@ -137,10 +40,20 @@
             align-items: center;
         }
 
-        /* Dark Mode Styles - apply to body.dark after theme styles for specificity */
+        /* Dark Mode Styles */
         body.dark {
-            background-color: var(--bg-dark);
-            color: var(--text-color-dark);
+            --bg-light: #1a202c;
+            --bg-dark: #1a202c;
+            --card-bg-light: #2d3748;
+            --card-bg-dark: #2d3748;
+            --text-color-light: #edf2f7;
+            --text-color-dark: #e2e8f0;
+            --border-color-light: #4a5568;
+            --border-color-dark: #5b6c81;
+            --shadow-light: rgba(0, 0, 0, 0.6);
+            --shadow-dark: rgba(0, 0, 0, 0.8);
+            --header-bg-light: #2d3748;
+            --header-bg-dark: #2d3748;
         }
 
         /* Global Styles */
@@ -161,10 +74,6 @@
             top: 0;
             z-index: 100;
         }
-        body.dark header {
-             background-color: var(--header-bg-dark);
-        }
-
 
         header .logo-container {
             display: flex;
@@ -177,9 +86,8 @@
             margin-right: 15px;
             border-radius: 8px;
             object-fit: cover;
-            background-color: var(--logo-bg-color); /* Dynamic logo background */
-            padding: 5px; /* Add some padding to see the background */
         }
+
         header h1.site-title {
             font-size: 28px;
             color: var(--text-color-light);
@@ -241,10 +149,6 @@
             overflow: hidden;
             position: relative;
             min-height: 500px; /* Ensure content doesn't collapse */
-        }
-        body.dark main {
-            background-color: var(--card-bg-dark);
-            box-shadow: 0 8px 25px var(--shadow-dark);
         }
 
         /* Section Transitions */
@@ -362,7 +266,7 @@
             object-fit: contain;
             margin: 0 auto;
             display: none; /* Hidden by default */
-            border: 1px solid var(--border-color-light); /* Gray-200 */
+            border: 1px solid #e2e8f0; /* Gray-200 */
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
         }
         body.dark #imagePreview {
@@ -388,7 +292,7 @@
             100% { transform: rotate(360deg); }
         }
 
-        #analyzeButton, #generateContentButton { /* Combined for consistency */
+        #analyzeButton {
             background-color: var(--primary-color); /* Adjusted to use var */
             color: white;
             padding: 15px 30px;
@@ -402,18 +306,18 @@
             box-shadow: 0 4px 12px rgba(0,0,0,0.2);
             margin-top: 15px;
         }
-        #analyzeButton:hover, #generateContentButton:hover {
+        #analyzeButton:hover {
             background-color: var(--primary-hover); /* Adjusted to use var */
             transform: translateY(-2px);
         }
-        #analyzeButton:disabled, #generateContentButton:disabled {
+        #analyzeButton:disabled {
             background-color: #cccccc;
             cursor: not-allowed;
             transform: none;
             box-shadow: none;
         }
 
-        #resultDisplay, #personalizedResultDisplay { /* Combined for consistency */
+        #resultDisplay {
             background-color: var(--bg-light);
             padding: 20px;
             border-radius: 12px;
@@ -422,7 +326,7 @@
             border: 1px solid var(--border-color-light);
             margin-top: 0; /* Adjusted from previous 20px */
         }
-        body.dark #resultDisplay, body.dark #personalizedResultDisplay {
+        body.dark #resultDisplay {
             background-color: var(--card-bg-dark);
             border-color: var(--border-color-dark);
         }
@@ -684,41 +588,16 @@
         }
 
         @media (max-width: 480px) {
-            header {
-                padding: 15px 10px; /* Reduce header padding */
-            }
-            header .logo-container {
-                margin-bottom: 10px; /* Reduce margin */
-            }
             header img.logo {
                 height: 50px;
                 width: 50px;
-                margin-right: 10px; /* Adjust margin */
             }
             header h1.site-title {
                 font-size: 20px;
             }
-            nav {
-                flex-direction: column; /* Stack nav items vertically */
-                align-items: center; /* Center items */
-            }
             nav a {
-                margin: 5px 0; /* Adjust spacing for stacked links */
+                margin: 0 10px 8px;
                 font-size: 14px;
-            }
-            /* Adjust theme selector and dark toggle for mobile */
-            .theme-selector-container {
-                margin-top: 10px; /* Add some space above selector */
-                width: 100%;
-                text-align: center;
-            }
-            #themeSelector {
-                width: 80%; /* Make selector wider */
-                margin: 0 auto;
-            }
-            .toggle-dark {
-                margin-top: 10px; /* Add space below selector */
-                margin-left: 0; /* Remove left margin for centering */
             }
             main {
                 padding: 15px;
@@ -735,7 +614,6 @@
                 font-size: 16px;
             }
         }
-
 
         .article-card {
             background-color: var(--bg-light);
@@ -783,7 +661,7 @@
         #personalized-content input[type="text"],
         #personalized-content input[type="number"] {
             color: var(--text-color-light); /* Default color for inputs */
-            background-color: var(--card-bg-light); /* Default background for inputs */
+            background-color: var(--bg-light); /* Default background for inputs */
             border-color: var(--border-color-light);
         }
 
@@ -811,50 +689,14 @@
         body.dark #personalizedContentText {
             color: var(--text-color-dark); /* Dark mode color */
         }
-
-        /* Theme Selector Styling */
-        #themeSelector {
-            margin-left: 20px;
-            padding: 8px 12px;
-            border-radius: 8px;
-            border: 1px solid var(--border-color-light);
-            background-color: var(--card-bg-light);
-            color: var(--text-color-light);
-            font-size: 15px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            appearance: none; /* Remove default dropdown arrow */
-            background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%20viewBox%3D%220%200%20292.4%20292.4%22%3E%3Cpath%20fill%3D%22%232d3748%22%20d%3D%22M287%2C197.8L159.2%2C68c-4.7-4.7-12.2-4.7-16.9%2C0L5.3%2C197.8c-4.7%2C4.7-4.7%2C12.2%2C0%2C16.9c4.7%2C4.7%2C12.2%2C4.7%2C16.9%2C0l128.2-127.7l128.2%2C127.7c4.7%2C4.7%2C12.2%2C4.7%2C16.9%2C0C291.6%2C210%2C291.6%2C202.5%2C287%2C197.8z%22%2F%3E%3C%2Fsvg%3E'); /* Custom arrow */
-            background-repeat: no-repeat;
-            background-position: right 10px top 50%;
-            background-size: 12px auto;
-            padding-right: 30px; /* Make space for arrow */
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
-
-        body.dark #themeSelector {
-            border-color: var(--border-color-dark);
-            background-color: var(--card-bg-dark);
-            color: var(--text-color-dark);
-            background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%20viewBox%3D%220%200%20292.4%20292.4%22%3E%3Cpath%20fill%3D%22%23edf2f7%22%20d%3D%22M287%2C197.8L159.2%2C68c-4.7-4.7-12.2-4.7-16.9%2C0L5.3%2C197.8c-4.7%2C4.7-4.7%2C12.2%2C0%2C16.9c4.7%2C4.7%2C12.2%2C4.7%2C16.9%2C0l128.2-127.7l128.2%2C127.7c4.7%2C4.7%2C12.2%2C4.7%2C16.9%2C0C291.6%2C210%2C291.6%2C202.5%2C287%2C197.8z%22%2F%3E%3C%2Fsvg%3E'); /* Inverted arrow for dark mode */
-        }
-        #themeSelector:hover {
-            border-color: var(--primary-color);
-            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
-        }
-        #themeSelector:focus {
-            outline: none;
-            box-shadow: 0 0 0 3px var(--primary-color) inset; /* Outline for focus */
-        }
-
     </style>
 </head>
 <body>
 
 <header>
     <div class="logo-container">
-        <!-- Logo will update its background color via JS -->
-        <img id="logo" src="https://placehold.co/90x90/10b981/ffffff?text=🐾" alt="Pet'emote Logo" class="logo" />
+        <!-- Original Logo: Placeholder JPEG for a paw print with emerald green background -->
+        <img src="logo.jpg" alt="Pet'emote Logo" class="logo" />
         <h1 class="site-title">Pet'emote</h1>
     </div>
     <nav>
@@ -862,17 +704,6 @@
         <a href="#" id="link-articles">Articles</a>
         <a href="#" id="link-personalized-content">Personalized Content</a>
         <a href="#" id="link-profile">Profile</a>
-        <div class="theme-selector-container">
-            <label for="themeSelector" class="sr-only">Select Theme</label>
-            <select id="themeSelector" title="Select Theme">
-                <option value="default">Emerald Garden (Default)</option>
-                <option value="ocean-breeze">Ocean Breeze</option>
-                <option value="sunset-glow">Sunset Glow</option>
-                <option value="lavender-dream">Lavender Dream</option>
-                <option value="forest-whisper">Forest Whisper</option>
-                <option value="charcoal-slate">Charcoal Slate</option>
-            </select>
-        </div>
         <label class="toggle-dark" for="darkToggle" aria-label="Toggle dark mode">
             <input type="checkbox" id="darkToggle" />
             <span class="toggle-thumb"></span>
@@ -896,15 +727,15 @@
 
             <img id="imagePreview" src="#" alt="Image Preview">
 
-            <button id="analyzeButton">
+            <button id="analyzeButton" class="bg-emerald-500 text-white py-3 px-6 rounded-lg font-bold shadow-md hover:bg-emerald-600 transition-colors duration-300 transform hover:scale-105 active:scale-95 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-opacity-50">
                 Analyze Emotion
             </button>
 
             <div id="loadingSpinner" class="loading-spinner"></div>
 
-            <div id="resultDisplay">
+            <div id="resultDisplay" class="bg-blue-50 p-6 rounded-lg text-left shadow-inner border border-blue-200">
                 <h2 class="text-xl font-semibold text-blue-800 mb-2">Emotion Analysis:</h2>
-                <p id="emotionText" class="italic">Upload an image and click 'Analyze Emotion' to see results.</p>
+                <p id="emotionText" class="text-gray-700 italic">Upload an image and click 'Analyze Emotion' to see results.</p>
             </div>
         </div>
     </section>
@@ -943,13 +774,13 @@
                 <label for="petWeight" class="block text-gray-700 text-sm font-bold mb-2">Pet's Weight (in kg/lbs):</label>
                 <input type="text" id="petWeight" class="shadow appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline rounded-md" placeholder="e.g., 25kg, 55lbs">
             </div>
-            <button id="generateContentButton">
+            <button id="generateContentButton" class="bg-emerald-500 text-white py-3 px-6 rounded-lg font-bold shadow-md hover:bg-emerald-600 transition-colors duration-300 transform hover:scale-105 active:scale-95 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-opacity-50 w-full">
                 Generate Personalized Advice
             </button>
             <div id="personalizedLoadingSpinner" class="loading-spinner mt-4"></div>
         </div>
 
-        <div id="personalizedResultDisplay">
+        <div id="personalizedResultDisplay" class="bg-blue-50 p-6 rounded-lg text-left shadow-inner border border-blue-200 mt-6">
             <h3 class="text-xl font-semibold text-blue-800 mb-2">Your Personalized Pet Advice:</h3>
             <div id="personalizedContentText" class="leading-relaxed">
                 <p>Enter your pet's details above and click 'Generate Personalized Advice' to see customized recommendations appear here.</p>
@@ -977,7 +808,7 @@
     <div class="modal-content">
         <span class="close-button">&times;</span>
         <p id="modalMessage" class="text-lg text-gray-800"></p>
-        <button id="modalOkButton">OK</button>
+        <button id="modalOkButton" class="mt-4 bg-blue-500 text-white py-2 px-5 rounded-md hover:bg-blue-600 transition-colors duration-300">OK</button>
     </div>
 </div>
 
@@ -987,7 +818,7 @@
         <span class="close-button" id="closeArticleModal">&times;</span>
         <h3 id="articleModalTitle"></h3>
         <div id="articleModalContent" class="text-gray-700"></div>
-        <button id="articleModalOkButton">Close</button>
+        <button id="articleModalOkButton" class="mt-4 bg-blue-500 text-white py-2 px-5 rounded-md hover:bg-blue-600 transition-colors duration-300">Close</button>
     </div>
 </div>
 
@@ -1053,10 +884,6 @@
     const closeArticleModalButton = document.getElementById('closeArticleModal');
     const articleModalOkButton = document.getElementById('articleModalOkButton');
 
-    // Theme Selector Elements
-    const themeSelector = document.getElementById('themeSelector');
-    const logoImg = document.getElementById('logo');
-
 
     // Function to show the generic custom modal
     function showModal(message) {
@@ -1093,10 +920,10 @@
         }
     }
 
-
     // Attach event listeners for generic modal
     if (closeButton) closeButton.onclick = hideModal;
     if (modalOkButton) modalOkButton.onclick = hideModal;
+
     // Close generic modal if clicked outside
     window.addEventListener('click', function(event) {
         if (event.target == myModal) {
@@ -1107,6 +934,7 @@
     // Attach event listeners for article modal
     if (closeArticleModalButton) closeArticleModalButton.onclick = hideArticleModal;
     if (articleModalOkButton) articleModalOkButton.onclick = hideArticleModal;
+
     // Close article modal if clicked outside
     window.addEventListener('click', function(event) {
         if (event.target == articleModal) {
@@ -1178,7 +1006,6 @@
             if (darkToggle) darkToggle.checked = false;
             localStorage.removeItem('petEmoteDarkMode');
         }
-        updateLogoColor(); // Update logo color on dark mode change
     }
 
     // Initialize toggle state from localStorage on page load
@@ -1189,40 +1016,6 @@
             applyDarkMode(darkToggle.checked);
         });
     }
-
-    // --- Theme Switching Logic ---
-    function applyTheme(themeName) {
-        // Remove all existing theme classes
-        document.body.classList.remove(
-            'theme-ocean-breeze',
-            'theme-sunset-glow',
-            'theme-lavender-dream',
-            'theme-forest-whisper',
-            'theme-charcoal-slate'
-        );
-
-        if (themeName !== 'default') {
-            document.body.classList.add(`theme-${themeName}`);
-        }
-        localStorage.setItem('petEmoteTheme', themeName);
-        updateLogoColor(); // Update logo color on theme change
-    }
-
-    function updateLogoColor() {
-        const primaryColor = getComputedStyle(document.documentElement).getPropertyValue('--primary-color').trim();
-        logoImg.src = `https://placehold.co/90x90/${primaryColor.substring(1)}/ffffff?text=🐾`;
-    }
-
-    // Initialize theme from localStorage on page load
-    const savedTheme = localStorage.getItem('petEmoteTheme') || 'default';
-    if (themeSelector) {
-        themeSelector.value = savedTheme;
-        themeSelector.addEventListener('change', (e) => {
-            applyTheme(e.target.value);
-        });
-    }
-    applyTheme(savedTheme); // Apply the saved theme initially
-
 
     // --- Firebase Authentication State Listener ---
     // This will run when the auth state changes (e.g., user logs in/out)
@@ -1413,7 +1206,7 @@
 
             } catch (error) {
                 console.error('Error analyzing image (network or parsing):', error);
-                showModal('A network error or parsing error occurred while analyzing the image. Please check your internet connection or console for more details.');
+                showModal('A network error or parsing error occurred. Please check your internet connection or console for more details.');
                 emotionText.textContent = 'Analysis failed. Please try again.';
             } finally {
                 loadingSpinner.style.display = 'none'; // Hide loading spinner
@@ -1461,9 +1254,6 @@
                         role: "user",
                         parts: [{ text: prompt }]
                     }],
-                    generationConfig: {
-                        responseMimeType: "text/plain", // Changed to text/plain to resolve API error
-                    }
                 };
 
                 const apiKey = "AIzaSyCcPlWydAmf4IQEQwLqvk_ZrJbxWQE1cYY";
@@ -1534,7 +1324,7 @@
                     <li><strong>Soft, Relaxed Eyes:</strong> Often squinted or almond-shaped, indicating comfort and trust.</li>
                     <li><strong>Hard Stare/Wide Eyes (Whale Eye):</strong> Direct, unblinking stare or showing the whites of their eyes can indicate tension, fear, or a challenge.</li>
                     <li><strong>Ears Forward/Alert:</strong> Sign of interest or focus.</li>
-                    <li><strong>Ears Pinned Back:</strong> Can mean fear, anxiety, or aggression, depending on other body cues.</li>
+                    <li><strong>Ears Pinned Back:</b> Can mean fear, anxiety, or aggression, depending on other body cues.</li>
                     <li><strong>Relaxed Mouth/Slightly Open:</strong> A happy, comfortable dog, possibly panting gently.</li>
                     <li><strong>Licking Lips (without food present):</strong> A common stress signal, often seen when a dog is uncomfortable or anxious.</li>
                     <li><strong>Yawning (without being tired):</strong> Another common stress signal, similar to lip-licking.</li>
@@ -1589,7 +1379,7 @@
                 <ul>
                     <li><strong>Slow Blink:</strong> A cat's "I love you." If your cat slow-blinks at you, try slow-blinking back to reciprocate.</li>
                     <li><strong>Dilated Pupils (Wide):</strong> Can indicate fear, excitement, playfulness, or aggression. Context is key.</li>
-                    <li><strong>Constricted Pupils (Slit):</strong> Often a sign of aggression or discomfort, especially in bright light.</li>
+                    <li><strong>Constricted Pupils (Slit):</b> Often a sign of aggression or discomfort, especially in bright light.</li>
                     <li><strong>Direct Stare:</strong> Can be challenging or a sign of intense focus. Averted gaze is generally more friendly.</li>
                 </ul>
 
@@ -1609,8 +1399,8 @@
                     <li><strong>Rubbing Against You (Bunting):</strong> Affectionate greeting, marking you with their scent.</li>
                     <li><strong>Kneading (Making Biscuits):</strong> A sign of contentment and comfort, harking back to kittenhood nursing.</li>
                     <li><strong>Arched Back, Hacked Hair:</strong> Defensive posture, trying to look larger and more intimidating.</li>
-                    <li><strong>Rolling on Back (Exposing Belly):</strong> If relaxed, it's a sign of trust and an invitation for a gentle rub (but often not a full belly rub!). If tense, it's a defensive posture.</li>
                     <li><strong>Crouched Low (Wagging Tail or Still):</strong> Predatory behavior, ready to pounce.</li>
+                    <li><strong>Rolling on Back (Exposing Belly):</b> If relaxed, it's a sign of trust and an invitation for a gentle rub (but often not a full belly rub!). If tense, it's a defensive posture.</li>
                 </ul>
 
                 <p>By paying attention to your cat's entire body, you can better understand their moods and needs, leading to a more harmonious household.</p>
@@ -1659,7 +1449,7 @@
                 <h4>Understanding Ingredient Labels</h4>
                 <p>Regardless of the life stage, always look for:</p>
                 <ul>
-                    <li><strong>Meat as the First Ingredient:</strong> Indicates a good source of protein.</li>
+                    <li><strong>Meat as the First Ingredient:</b> Indicates a good source of protein.</li>
                     <li><strong>Whole Grains (if included):</strong> Such as brown rice, oats, barley, rather than corn or wheat fillers.</li>
                     <li><strong>Limited Fillers, Artificial Colors, and Preservatives:</strong> These offer little to no nutritional value.</li>
                 </ul>
@@ -1748,7 +1538,7 @@
                 <p>Keep your arrivals and departures low-key. Excessive fuss can heighten your pet's anxiety.</p>
                 <ul>
                     <li><strong>Ignore for a Few Minutes:</strong> When you arrive home, ignore your pet for the first few minutes until they calm down, then greet them calmly.</li>
-                    <li><strong>No Emotional Farewells:</strong> Don't make a big deal out of leaving. This can increase their anticipation and anxiety.</li>
+                    <li><strong>No Emotional Farewells:</b> Don't make a big deal out of leaving. This can increase their anticipation and anxiety.</li>
                 </ul>
 
                 <h4>When to Seek Professional Help</h4>
@@ -1832,9 +1622,6 @@
                         role: "user",
                         parts: [{ text: prompt }]
                     }],
-                    generationConfig: {
-                        responseMimeType: "text/plain", // Changed to text/plain to resolve API error
-                    }
                 };
 
                 const apiKey = "AIzaSyCcPlWydAmf4IQEQwLqvk_ZrJbxWQE1cYY";
