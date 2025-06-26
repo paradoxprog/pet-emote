@@ -11,20 +11,20 @@
     <style>
         /* Variables for Dark Mode */
         :root {
-            --primary-color: #B08EDF; /* Lavender Dream Primary */
-            --primary-hover: #996DD7; /* Darker Lavender Dream */
+            --primary-color: #8A4DC4; /* Darker Lavender Dream Primary */
+            --primary-hover: #723BAA; /* Even Darker Lavender Dream */
             --bg-light: #f0f4f8; /* Light blue-gray background */
-            --bg-dark: #1a202c; /* Dark slate background */
+            --bg-dark: #121212; /* Very Dark Background for contrast */
             --card-bg-light: #ffffff;
-            --card-bg-dark: #2d3748; /* Darker card background */
+            --card-bg-dark: #1e1e1e; /* Darker card background for contrast */
             --text-color-light: #2d3748; /* Dark gray text */
-            --text-color-dark: #edf2f7; /* Light gray text */
+            --text-color-dark: #e0e0e0; /* Lighter gray text for dark mode */
             --border-color-light: #e2e8f0;
-            --border-color-dark: #4a5568;
-            --shadow-light: rgba(0, 0, 0, 0.08);
-            --shadow-dark: rgba(0, 0, 0, 0.4);
+            --border-color-dark: #3a3a3a; /* Darker border for dark mode */
+            --shadow-light: rgba(0, 0, 0, 0.15); /* Slightly darker shadow for light mode */
+            --shadow-dark: rgba(0, 0, 0, 0.6); /* Adjusted for better dark mode visibility */
             --header-bg-light: #ffffff;
-            --header-bg-dark: #2d3748;
+            --header-bg-dark: #1e1e1e; /* Consistent with card background */
         }
 
         body {
@@ -42,18 +42,18 @@
 
         /* Dark Mode Styles */
         body.dark {
-            --bg-light: #1a202c;
-            --bg-dark: #1a202c;
-            --card-bg-light: #2d3748;
-            --card-bg-dark: #2d3748;
-            --text-color-light: #edf2f7;
-            --text-color-dark: #e2e8f0;
-            --border-color-light: #4a5568;
-            --border-color-dark: #5b6c81;
+            --bg-light: #121212;
+            --bg-dark: #121212;
+            --card-bg-light: #1e1e1e;
+            --card-bg-dark: #1e1e1e;
+            --text-color-light: #e0e0e0;
+            --text-color-dark: #e0e0e0;
+            --border-color-light: #3a3a3a;
+            --border-color-dark: #4a4a4a;
             --shadow-light: rgba(0, 0, 0, 0.6);
             --shadow-dark: rgba(0, 0, 0, 0.8);
-            --header-bg-light: #2d3748;
-            --header-bg-dark: #2d3748;
+            --header-bg-light: #1e1e1e;
+            --header-bg-dark: #1e1e1e;
         }
 
         /* Global Styles */
@@ -695,8 +695,8 @@
 
 <header>
     <div class="logo-container">
-        <!-- Original Logo: Placeholder JPEG for a paw print with emerald green background -->
-        <img src="logo.jpg" alt="Pet'emote Logo" class="logo" />
+        <!-- Logo: Placeholder JPEG for a paw print, updated to Lavender Dream color -->
+        <img src="https://placehold.co/90x90/8A4DC4/ffffff?text=🐾" alt="Pet'emote Logo" class="logo" />
         <h1 class="site-title">Pet'emote</h1>
     </div>
     <nav>
@@ -727,13 +727,15 @@
 
             <img id="imagePreview" src="#" alt="Image Preview">
 
-            <button id="analyzeButton" class="bg-emerald-500 text-white py-3 px-6 rounded-lg font-bold shadow-md hover:bg-emerald-600 transition-colors duration-300 transform hover:scale-105 active:scale-95 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-opacity-50">
+            <!-- Analyze Button: Updated to use CSS variables for background colors -->
+            <button id="analyzeButton" class="bg-[var(--primary-color)] text-white py-3 px-6 rounded-lg font-bold shadow-md hover:bg-[var(--primary-hover)] transition-colors duration-300 transform hover:scale-105 active:scale-95 focus:outline-none focus:ring-2 focus:ring-[var(--primary-color)] focus:ring-opacity-50">
                 Analyze Emotion
             </button>
 
             <div id="loadingSpinner" class="loading-spinner"></div>
 
-            <div id="resultDisplay" class="bg-blue-50 p-6 rounded-lg text-left shadow-inner border border-blue-200">
+            <!-- Result Display: Removed conflicting Tailwind background and border classes -->
+            <div id="resultDisplay" class="p-6 rounded-lg text-left shadow-inner">
                 <h2 class="text-xl font-semibold text-blue-800 mb-2">Emotion Analysis:</h2>
                 <p id="emotionText" class="text-gray-700 italic">Upload an image and click 'Analyze Emotion' to see results.</p>
             </div>
@@ -757,6 +759,7 @@
         <h2 class="section-heading">Personalized Content for Your Pet</h2>
         <p class="text-gray-600 mb-6">Enter your pet's details to get tailored recommendations and insights.</p>
 
+        <!-- Personalized Content Input/Generate Section -->
         <div class="bg-blue-50 p-6 rounded-lg text-left shadow-inner border border-blue-200 mb-6">
             <div class="mb-4">
                 <label for="petName" class="block text-gray-700 text-sm font-bold mb-2">Pet's Name:</label>
@@ -774,13 +777,15 @@
                 <label for="petWeight" class="block text-gray-700 text-sm font-bold mb-2">Pet's Weight (in kg/lbs):</label>
                 <input type="text" id="petWeight" class="shadow appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline rounded-md" placeholder="e.g., 25kg, 55lbs">
             </div>
-            <button id="generateContentButton" class="bg-emerald-500 text-white py-3 px-6 rounded-lg font-bold shadow-md hover:bg-emerald-600 transition-colors duration-300 transform hover:scale-105 active:scale-95 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-opacity-50 w-full">
+            <!-- Generate Content Button: Updated to use CSS variables for background colors -->
+            <button id="generateContentButton" class="bg-[var(--primary-color)] text-white py-3 px-6 rounded-lg font-bold shadow-md hover:bg-[var(--primary-hover)] transition-colors duration-300 transform hover:scale-105 active:scale-95 focus:outline-none focus:ring-2 focus:ring-[var(--primary-color)] focus:ring-opacity-50 w-full">
                 Generate Personalized Advice
             </button>
             <div id="personalizedLoadingSpinner" class="loading-spinner mt-4"></div>
         </div>
 
-        <div id="personalizedResultDisplay" class="bg-blue-50 p-6 rounded-lg text-left shadow-inner border border-blue-200 mt-6">
+        <!-- Personalized Result Display: Removed conflicting Tailwind background and border classes -->
+        <div id="personalizedResultDisplay" class="p-6 rounded-lg text-left shadow-inner">
             <h3 class="text-xl font-semibold text-blue-800 mb-2">Your Personalized Pet Advice:</h3>
             <div id="personalizedContentText" class="leading-relaxed">
                 <p>Enter your pet's details above and click 'Generate Personalized Advice' to see customized recommendations appear here.</p>
@@ -1342,7 +1347,7 @@
 
                 <h4>Vocalizations: Beyond the Bark</h4>
                 <ul>
-                    <li><strong>Barks:</strong> Can vary widely in meaning depending on pitch, duration, and frequency. A sharp, high-pitched bark might be excitement, while a low, guttural bark could be a warning.</li>
+                    <li><strong>Barks:</b> Can vary widely in meaning depending on pitch, duration, and frequency. A sharp, high-pitched bark might be excitement, while a low, guttural bark could be a warning.</li>
                     <li><strong>Growls:</strong> Almost always a warning. Respect a growl; it means the dog is uncomfortable and needs space.</li>
                     <li><strong>Whines:</strong> Often indicate a need (food, attention, potty break) or anxiety/distress.</li>
                     <li><strong>Howls:</strong> Can be a form of communication over long distances or a response to certain sounds.</li>
@@ -1390,7 +1395,7 @@
                     <li><strong>Long, Drawn-Out Meow:</strong> Demanding something, like food or attention. "I want food NOW!"</li>
                     <li><strong>Low-Pitched Meow/Mutter:</strong> Complaint or dissatisfaction.</li>
                     <li><strong>Purr:</strong> Usually contentment and relaxation, but can also be a self-soothing mechanism when stressed or injured.</li>
-                    <li><strong>Hiss/Growl/Spit:</strong> Clear warning signs of fear, anger, or aggression. "Stay away!"</li>
+                    <li><strong>Hiss/Growl/Spit:</b> Clear warning signs of fear, anger, or aggression. "Stay away!"</li>
                     <li><strong>Trill/Chirp:</strong> A soft, rolling vocalization, often used by mothers to call kittens or by cats to get your attention in a friendly way.</li>
                 </ul>
 
@@ -1491,6 +1496,7 @@
                     <li><strong>Jumping:</strong> Instead of scolding, ignore the jumping. When your pet's paws are on the floor, immediately reward. Teach "sit" as an alternative.</li>
                     <li><strong>Excessive Barking:</strong> Identify the trigger. Teach a "quiet" command by rewarding silence after a bark, or reward them for being quiet when the trigger appears.</li>
                     <li><strong>Chewing Inappropriately:</strong> Provide appropriate chew toys and generously reward your pet when they chew on those. Make inappropriate items less accessible.</li>
+                    <li><strong>Training Roadmaps:</strong> Step-by-step training plans adapted to its learning style.</li>
                 </ul>
 
                 <h4>Building a Strong Bond</h4>
@@ -1531,7 +1537,7 @@
                 <p>A tired pet is often a calmer pet. Ensure your pet gets sufficient physical exercise and mental stimulation before you leave.</p>
                 <ul>
                     <li><strong>Morning Exercise:</strong> A long walk, a game of fetch, or a vigorous play session can help burn off excess energy.</li>
-                    <li><strong>Puzzle Toys:</strong> Provide interactive toys that dispense food or require problem-solving to keep their minds engaged while you're away.</li>
+                    <li><strong>Puzzle Toys:</strong> Provide interactive toys that alleviate boredom and keep their minds engaged while you're away.</li>
                 </ul>
 
                 <h4>4. Avoid Dramatic Departures and Greetings</h4>
@@ -1580,93 +1586,6 @@
                     showArticleModal(selectedArticle.title, selectedArticle.content);
                 }
             });
-        });
-    }
-
-    // --- Personalized Content Logic ---
-    // Handle Generate Personalized Content button click
-    if (generateContentButton) {
-        generateContentButton.addEventListener('click', async function() {
-            const petName = petNameInput.value.trim();
-            const petBreed = petBreedInput.value.trim();
-            const petAge = petAgeInput.value.trim();
-            const petWeight = petWeightInput.value.trim();
-
-            if (!petName || !petBreed || !petAge || !petWeight) {
-                showModal('Please fill in all pet details to generate personalized content.');
-                return;
-            }
-
-            personalizedLoadingSpinner.style.display = 'block';
-            personalizedContentText.innerHTML = '<p>Generating personalized advice... This might take a moment.</p>';
-            generateContentButton.disabled = true;
-
-            try {
-                const prompt = `Generate personalized content for a pet with the following details:
-                Name: ${petName}
-                Breed/Type: ${petBreed}
-                Age: ${petAge} years
-                Weight: ${petWeight} kg
-
-                Please provide advice for the following categories:
-                1.  **Customized Diet Plan:** Recommendations based on its breed, age, weight, and activity level.
-                2.  **Behavioral Insights:** Articles and tips relevant to its specific behavioral patterns.
-                3.  **Health Reminders:** Personalized alerts/advice for vaccinations, vet check-ups, and medication.
-                4.  **Training Roadmaps:** Step-by-step training plans adapted to its learning style.
-                5.  **Activity Suggestions:** Ideas for exercises and play tailored to its energy and breed.
-
-                Structure the response clearly with headings for each category, using Markdown for formatting (e.g., **bold**, *italic*, lists, headings like ## and ###).`;
-
-                const payload = {
-                    contents: [{
-                        role: "user",
-                        parts: [{ text: prompt }]
-                    }],
-                };
-
-                const apiKey = "AIzaSyCcPlWydAmf4IQEQwLqvk_ZrJbxWQE1cYY";
-                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
-
-                const response = await fetch(apiUrl, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload)
-                });
-
-                if (!response.ok) {
-                    const errorText = await response.text();
-                    console.error('API Error Response Text:', errorText);
-                    if (response.status === 403) {
-                        showModal(`API Error: 403 Forbidden. This usually means the API key is missing or invalid.`);
-                        personalizedContentText.innerHTML = '<p class="text-red-600">Analysis failed: API Key Error (403 Forbidden).</p>';
-                    } else {
-                        showModal(`API Error: ${response.status} - ${errorText.substring(0, Math.min(errorText.length, 150))}...`);
-                        personalizedContentText.innerHTML = '<p class="text-red-600">Analysis failed due to API error.</p>';
-                    }
-                    return;
-                }
-
-                const result = await response.json();
-
-                if (result.candidates && result.candidates.length > 0 &&
-                    result.candidates[0].content && result.candidates[0].content.parts &&
-                    result.candidates[0].content.parts.length > 0) {
-                    const text = result.candidates[0].content.parts[0].text;
-                    personalizedContentText.textContent = text; // Display as plain text
-                } else {
-                    personalizedContentText.innerHTML = '<p class="text-red-600">Could not get personalized advice. The AI response was empty or unexpected.</p>';
-                    console.error('Unexpected API response structure or empty content:', result);
-                    showModal('Could not get a valid response from the AI. The response structure was unexpected. See console for details.');
-                }
-
-            } catch (error) {
-                console.error('Error generating personalized content (network or parsing):', error);
-                showModal('A network error or parsing error occurred. Please check your internet connection or console for more details.');
-                personalizedContentText.innerHTML = '<p class="text-red-600">Failed to generate personalized advice. Please try again.</p>';
-            } finally {
-                personalizedLoadingSpinner.style.display = 'none';
-                generateContentButton.disabled = false;
-            }
         });
     }
 
