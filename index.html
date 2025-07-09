@@ -553,29 +553,6 @@
             color: hsl(var(--muted-foreground));
         }
 
-        /* Database Status Indicator */
-        .status-indicator {
-            position: fixed;
-            top: 1rem;
-            right: 1rem;
-            padding: 0.5rem 1rem;
-            border-radius: 0.5rem;
-            font-size: 0.875rem;
-            font-weight: 600;
-            z-index: 1000;
-            transition: all 0.3s ease;
-        }
-
-        .status-connected {
-            background: #10b981;
-            color: white;
-        }
-
-        .status-disconnected {
-            background: #ef4444;
-            color: white;
-        }
-
         /* Mobile Responsive */
         @media (max-width: 768px) {
             .header-container {
@@ -628,8 +605,6 @@
     </style>
 </head>
 <body>
-    <div id="dbStatus" class="status-indicator status-disconnected">Database: Connecting...</div>
-
     <header>
         <div class="header-container">
             <div class="logo-section">
@@ -981,23 +956,6 @@
         let currentUser = null;
         let dbConnectionStatus = false;
 
-        // Database connection monitoring
-        const connectedRef = database.ref('.info/connected');
-        connectedRef.on('value', (snapshot) => {
-            const dbStatus = document.getElementById('dbStatus');
-            if (snapshot.val() === true) {
-                dbConnectionStatus = true;
-                dbStatus.textContent = 'Database: Connected';
-                dbStatus.className = 'status-indicator status-connected';
-                console.log('Firebase Realtime Database connected');
-            } else {
-                dbConnectionStatus = false;
-                dbStatus.textContent = 'Database: Disconnected';
-                dbStatus.className = 'status-indicator status-disconnected';
-                console.log('Firebase Realtime Database disconnected');
-            }
-        });
-
         // --- Enhanced Database Functions ---
 
         // User Profile Management
@@ -1346,9 +1304,6 @@
                     loginCount: firebase.database.ServerValue.increment(1),
                     lastLoginMethod: 'email'
                 });
-
-                // Redirect to main.html after successful login
-                window.location.href = 'main.html';
                 
             } catch (error) {
                 console.error("Login Error:", error);
@@ -1405,9 +1360,6 @@
                 });
                 
                 document.getElementById('signupForm').reset();
-
-                // Redirect to main.html after successful signup
-                window.location.href = 'main.html';
                 
             } catch (error) {
                 console.error("Signup Error:", error);
@@ -1442,9 +1394,6 @@
                     loginCount: firebase.database.ServerValue.increment(1),
                     lastLoginMethod: 'google'
                 });
-
-                // Redirect to main.html after successful Google sign-in
-                window.location.href = 'main.html';
                 
             } catch (error) {
                 console.error("Google Sign-In Error:", error);
