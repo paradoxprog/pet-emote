@@ -689,6 +689,37 @@
         body.dark #personalizedContentText {
             color: var(--text-color-dark); /* Dark mode color */
         }
+        
+        /* Styling for Markdown-generated content */
+        #personalizedContentText h3, 
+        #personalizedContentText h2, 
+        #personalizedContentText h4 {
+            color: var(--primary-color);
+            margin-top: 20px;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        #personalizedContentText ul,
+        #personalizedContentText ol {
+            list-style-position: inside;
+            padding-left: 15px;
+            margin-bottom: 15px;
+        }
+
+        #personalizedContentText li {
+            margin-bottom: 8px;
+            line-height: 1.6;
+        }
+
+        #personalizedContentText p {
+            margin-bottom: 15px;
+        }
+
+        #personalizedContentText strong {
+            font-weight: 600;
+        }
+
     </style>
 </head>
 <body>
@@ -835,6 +866,10 @@
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+
+<!-- Add Showdown.js CDN for Markdown to HTML conversion -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/showdown/2.1.0/showdown.min.js"></script>
+
 <script>
     // --- Firebase Configuration ---
     const firebaseConfig = {
@@ -1288,8 +1323,18 @@
                 if (result.candidates && result.candidates.length > 0 &&
                     result.candidates[0].content && result.candidates[0].content.parts &&
                     result.candidates[0].content.parts.length > 0) {
+                    
                     const text = result.candidates[0].content.parts[0].text;
-                    personalizedContentText.textContent = text; // Display as plain text
+                    
+                    // 1. Create a new Showdown converter instance
+                    const converter = new showdown.Converter();
+                    
+                    // 2. Convert the Markdown text to HTML
+                    const htmlContent = converter.makeHtml(text);
+                    
+                    // 3. Set the innerHTML of the display element
+                    personalizedContentText.innerHTML = htmlContent;
+
                 } else {
                     personalizedContentText.innerHTML = '<p class="text-red-600">Could not get personalized advice. The AI response was empty or unexpected.</p>';
                     console.error('Unexpected API response structure or empty content:', result);
@@ -1347,7 +1392,7 @@
 
                 <h4>Vocalizations: Beyond the Bark</h4>
                 <ul>
-                    <li><strong>Barks:</b> Can vary widely in meaning depending on pitch, duration, and frequency. A sharp, high-pitched bark might be excitement, while a low, guttural bark could be a warning.</li>
+                    <li><strong>Barks:</strong> Can vary widely in meaning depending on pitch, duration, and frequency. A sharp, high-pitched bark might be excitement, while a low, guttural bark could be a warning.</li>
                     <li><strong>Growls:</strong> Almost always a warning. Respect a growl; it means the dog is uncomfortable and needs space.</li>
                     <li><strong>Whines:</strong> Often indicate a need (food, attention, potty break) or anxiety/distress.</li>
                     <li><strong>Howls:</strong> Can be a form of communication over long distances or a response to certain sounds.</li>
@@ -1384,7 +1429,7 @@
                 <ul>
                     <li><strong>Slow Blink:</strong> A cat's "I love you." If your cat slow-blinks at you, try slow-blinking back to reciprocate.</li>
                     <li><strong>Dilated Pupils (Wide):</strong> Can indicate fear, excitement, playfulness, or aggression. Context is key.</li>
-                    <li><strong>Constricted Pupils (Slit):</b> Often a sign of aggression or discomfort, especially in bright light.</li>
+                    <li><strong>Constricted Pupils (Slit):</strong> Often a sign of aggression or discomfort, especially in bright light.</li>
                     <li><strong>Direct Stare:</strong> Can be challenging or a sign of intense focus. Averted gaze is generally more friendly.</li>
                 </ul>
 
@@ -1395,7 +1440,7 @@
                     <li><strong>Long, Drawn-Out Meow:</strong> Demanding something, like food or attention. "I want food NOW!"</li>
                     <li><strong>Low-Pitched Meow/Mutter:</strong> Complaint or dissatisfaction.</li>
                     <li><strong>Purr:</strong> Usually contentment and relaxation, but can also be a self-soothing mechanism when stressed or injured.</li>
-                    <li><strong>Hiss/Growl/Spit:</b> Clear warning signs of fear, anger, or aggression. "Stay away!"</li>
+                    <li><strong>Hiss/Growl/Spit:</strong> Clear warning signs of fear, anger, or aggression. "Stay away!"</li>
                     <li><strong>Trill/Chirp:</strong> A soft, rolling vocalization, often used by mothers to call kittens or by cats to get your attention in a friendly way.</li>
                 </ul>
 
@@ -1405,7 +1450,7 @@
                     <li><strong>Kneading (Making Biscuits):</strong> A sign of contentment and comfort, harking back to kittenhood nursing.</li>
                     <li><strong>Arched Back, Hacked Hair:</strong> Defensive posture, trying to look larger and more intimidating.</li>
                     <li><strong>Crouched Low (Wagging Tail or Still):</strong> Predatory behavior, ready to pounce.</li>
-                    <li><strong>Rolling on Back (Exposing Belly):</b> If relaxed, it's a sign of trust and an invitation for a gentle rub (but often not a full belly rub!). If tense, it's a defensive posture.</li>
+                    <li><strong>Rolling on Back (Exposing Belly):</strong> If relaxed, it's a sign of trust and an invitation for a gentle rub (but often not a full belly rub!). If tense, it's a defensive posture.</li>
                 </ul>
 
                 <p>By paying attention to your cat's entire body, you can better understand their moods and needs, leading to a more harmonious household.</p>
@@ -1544,7 +1589,7 @@
                 <p>Keep your arrivals and departures low-key. Excessive fuss can heighten your pet's anxiety.</p>
                 <ul>
                     <li><strong>Ignore for a Few Minutes:</strong> When you arrive home, ignore your pet for the first few minutes until they calm down, then greet them calmly.</li>
-                    <li><strong>No Emotional Farewells:</b> Don't make a big deal out of leaving. This can increase their anticipation and anxiety.</li>
+                    <li><strong>No Emotional Farewells:</strong> Don't make a big deal out of leaving. This can increase their anticipation and anxiety.</li>
                 </ul>
 
                 <h4>When to Seek Professional Help</h4>
