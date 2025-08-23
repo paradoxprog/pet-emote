@@ -1219,8 +1219,8 @@
             return;
         }
         try {
-            const userRef = database.ref(`users/${uid}`);
-            // Check if user data already exists to avoid overwriting display name for existing users
+            const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
+            const userRef = database.ref(`artifacts/${appId}/users/${uid}/profile`);
             const snapshot = await userRef.once('value');
             if (!snapshot.exists()) {
                  await userRef.set({
