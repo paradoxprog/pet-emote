@@ -720,119 +720,114 @@
             font-weight: 600;
         }
 
-        /* --- Chatbot Styles --- */
-        #chatbot {
-            display: flex;
-            flex-direction: column;
-            height: 60vh; /* Adjust height as needed */
-            max-height: 500px;
+        /* Chatbot Section */
+        .chatbot-container {
+            max-width: 700px;
+            margin: 0 auto;
             border: 1px solid var(--border-color-light);
             border-radius: 12px;
             overflow: hidden;
-            box-shadow: 0 4px 15px var(--shadow-light);
-        }
-        body.dark #chatbot {
-            border-color: var(--border-color-dark);
-        }
-
-        #chat-window {
-            flex-grow: 1;
-            padding: 20px;
-            overflow-y: auto;
-            background-color: var(--bg-light);
             display: flex;
             flex-direction: column;
-            gap: 12px;
+            height: 60vh; /* Set a fixed height */
+            background-color: var(--bg-light);
         }
-        body.dark #chat-window {
+        body.dark .chatbot-container {
+            border-color: var(--border-color-dark);
             background-color: var(--card-bg-dark);
         }
 
+        .chat-window {
+            flex-grow: 1;
+            padding: 20px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
         .chat-message {
-            padding: 10px 15px;
+            padding: 12px 18px;
             border-radius: 18px;
             max-width: 80%;
             line-height: 1.5;
         }
 
-        .user-message {
+        .chat-message.user {
             background-color: var(--primary-color);
             color: white;
             align-self: flex-end;
             border-bottom-right-radius: 4px;
         }
 
-        .bot-message {
+        .chat-message.bot {
             background-color: var(--card-bg-light);
             color: var(--text-color-light);
             align-self: flex-start;
             border: 1px solid var(--border-color-light);
             border-bottom-left-radius: 4px;
         }
-        body.dark .bot-message {
-            background-color: var(--bg-dark);
+        body.dark .chat-message.bot {
+            background-color: var(--card-bg-dark);
             color: var(--text-color-dark);
             border-color: var(--border-color-dark);
         }
-        
-        .bot-typing {
+
+        .chat-message.bot.thinking {
             font-style: italic;
-            color: var(--text-color-light);
-            opacity: 0.7;
-            align-self: flex-start;
-            padding: 10px 15px;
+            color: #9ca3af; /* gray-400 */
         }
-        body.dark .bot-typing {
-            color: var(--text-color-dark);
+        body.dark .chat-message.bot.thinking {
+            color: #6b7280; /* gray-500 */
         }
 
 
-        #chat-input-container {
+        .chat-input-area {
             display: flex;
-            padding: 10px;
+            padding: 15px;
             border-top: 1px solid var(--border-color-light);
             background-color: var(--card-bg-light);
         }
-        body.dark #chat-input-container {
+        body.dark .chat-input-area {
             border-top-color: var(--border-color-dark);
             background-color: var(--header-bg-dark);
         }
-
 
         #chat-input {
             flex-grow: 1;
             padding: 12px;
             border: 1px solid var(--border-color-light);
             border-radius: 8px;
-            font-size: 16px;
-            background-color: var(--bg-light);
-            color: var(--text-color-light);
-            transition: border-color 0.3s ease, box-shadow 0.3s ease;
             margin-right: 10px;
+            font-size: 16px;
+            color: var(--text-color-light);
+            background-color: var(--bg-light);
         }
         body.dark #chat-input {
-            background-color: var(--card-bg-dark);
             border-color: var(--border-color-dark);
             color: var(--text-color-dark);
-        }
-        #chat-input:focus {
-            outline: none;
-            border-color: var(--primary-color);
-            box-shadow: 0 0 0 3px rgba(138, 77, 196, 0.2);
+            background-color: var(--card-bg-dark);
         }
 
         #send-chat-button {
             background-color: var(--primary-color);
             color: white;
-            padding: 0 20px;
-            border-radius: 8px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
+            padding: 12px 20px;
             border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background-color 0.3s ease;
         }
         #send-chat-button:hover {
             background-color: var(--primary-hover);
+        }
+        #send-chat-button:disabled,
+        #generateContentButton:disabled {
+             background-color: #cccccc;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
         }
 
     </style>
@@ -842,7 +837,7 @@
 <header>
     <div class="logo-container">
         <!-- Logo: Placeholder JPEG for a paw print, updated to Lavender Dream color -->
-        <img src="logo.jpg" alt="Pet'emote Logo" class="logo" />
+        <img src="https://placehold.co/80x80/8A4DC4/FFFFFF?text=Paw" alt="Pet'emote Logo" class="logo" />
         <h1 class="site-title">Pet'emote</h1>
     </div>
     <nav>
@@ -939,19 +934,17 @@
             </div>
         </div>
     </section>
-    
+
     <!-- Chatbot Section -->
-    <section id="chatbot-section">
-        <h2 class="section-heading">Pet'emote Assistant</h2>
-        <p class="text-center mb-6">Have questions about your pet? Ask our AI assistant for help and advice!</p>
-        <div id="chatbot">
-            <div id="chat-window">
-                <div class="chat-message bot-message">
-                    Hello! I'm the Pet'emote assistant. How can I help you and your furry friend today?
-                </div>
+    <section id="chatbot">
+        <h2 class="section-heading">Pet'emote Chatbot</h2>
+        <div class="chatbot-container">
+            <div id="chat-window" class="chat-window">
+                <!-- Chat messages will appear here -->
+                <div class="chat-message bot">Hello! How can I help you with your pet today?</div>
             </div>
-            <div id="chat-input-container">
-                <input type="text" id="chat-input" placeholder="Ask a question about your pet...">
+            <div class="chat-input-area">
+                <input type="text" id="chat-input" placeholder="Ask about your pet's health, behavior, etc.">
                 <button id="send-chat-button">Send</button>
             </div>
         </div>
@@ -1015,11 +1008,16 @@
         appId: "1:560806298260:web:8724cda11543d877d52a81",
         measurementId: "G-Q28JF0E294"
     };
+    const GEMINI_API_KEY = "AIzaSyB9RBN6azjBtz9O4dwNTSTUD_rv1oPGssI";
+
 
     // Initialize Firebase
     firebase.initializeApp(firebaseConfig);
     const database = firebase.database();
     const auth = firebase.auth();
+
+    // --- Global State ---
+    let isApiBusy = false;
 
     // --- UI Elements for Analyzer Section ---
     const imageUpload = document.getElementById('imageUpload');
@@ -1043,12 +1041,11 @@
     const generateContentButton = document.getElementById('generateContentButton');
     const personalizedLoadingSpinner = document.getElementById('personalizedLoadingSpinner');
     const personalizedContentText = document.getElementById('personalizedContentText');
-    
+
     // --- UI Elements for Chatbot Section ---
     const chatWindow = document.getElementById('chat-window');
     const chatInput = document.getElementById('chat-input');
     const sendChatButton = document.getElementById('send-chat-button');
-
 
     // --- Modal Elements (Global scope for accessibility) ---
     const myModal = document.getElementById('myModal');
@@ -1127,7 +1124,7 @@
         'analyzer': document.getElementById('analyzer'),
         'articles': document.getElementById('articles'),
         'personalized-content': document.getElementById('personalized-content'),
-        'chatbot-section': document.getElementById('chatbot-section'),
+        'chatbot': document.getElementById('chatbot'),
         'profile': document.getElementById('profile')
     };
 
@@ -1162,8 +1159,8 @@
             void sections[sectionIdToShow].offsetWidth; // Trigger reflow for animation
             sections[sectionIdToShow].classList.add('active');
         }
-        if (navLinks[`link-${sectionIdToShow.replace('-section', '')}`]) {
-            navLinks[`link-${sectionIdToShow.replace('-section', '')}`].classList.add('active-nav-link');
+        if (navLinks[`link-${sectionIdToShow}`]) {
+            navLinks[`link-${sectionIdToShow}`].classList.add('active-nav-link');
         }
     }
 
@@ -1171,7 +1168,7 @@
     if (navLinks['link-analyzer']) navLinks['link-analyzer'].addEventListener('click', (e) => { e.preventDefault(); showSection('analyzer'); });
     if (navLinks['link-articles']) navLinks['link-articles'].addEventListener('click', (e) => { e.preventDefault(); showSection('articles'); });
     if (navLinks['link-personalized-content']) navLinks['link-personalized-content'].addEventListener('click', (e) => { e.preventDefault(); showSection('personalized-content'); });
-    if (navLinks['link-chatbot']) navLinks['link-chatbot'].addEventListener('click', (e) => { e.preventDefault(); showSection('chatbot-section'); });
+    if (navLinks['link-chatbot']) navLinks['link-chatbot'].addEventListener('click', (e) => { e.preventDefault(); showSection('chatbot'); });
     if (navLinks['link-profile']) navLinks['link-profile'].addEventListener('click', (e) => { e.preventDefault(); showSection('profile'); });
 
 
@@ -1277,32 +1274,55 @@
         }
     }
 
-    // --- Exponential Backoff Fetch Logic ---
-    async function fetchWithExponentialBackoff(url, payload, maxRetries = 5) {
-        let attempt = 0;
-        while (attempt < maxRetries) {
-            const response = await fetch(url, {
+    // --- API Call Management ---
+
+    /**
+     * Sets the global API busy state and disables/enables relevant buttons.
+     * @param {boolean} busy - True to set to busy, false to release.
+     */
+    function setApiBusy(busy) {
+        isApiBusy = busy;
+        // The analyze button has its own logic based on image upload, so we manage it separately in its own function.
+        // We only disable it here if we are setting the busy state.
+        if (busy) {
+            analyzeButton.disabled = true;
+        } else {
+            // Re-enable only if an image is actually uploaded
+            analyzeButton.disabled = !uploadedBase64Image;
+        }
+        generateContentButton.disabled = busy;
+        sendChatButton.disabled = busy;
+    }
+
+    /**
+     * Fetches data from the Gemini API with exponential backoff for rate limiting.
+     * @param {string} apiUrl The full API URL.
+     * @param {object} payload The request payload.
+     * @param {number} maxRetries The maximum number of retries.
+     * @returns {Promise<Response>} The fetch response object.
+     */
+    async function fetchWithExponentialBackoff(apiUrl, payload, maxRetries = 5) {
+        let delay = 1500; // Start with 1.5 second delay
+        for (let i = 0; i < maxRetries; i++) {
+            const response = await fetch(apiUrl, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(payload)
             });
 
-            if (response.ok) {
-                return response.json();
-            }
-
             if (response.status === 429) {
-                const delay = (2 ** attempt) * 1000 + Math.random() * 1000; // Exponential backoff with jitter
-                console.warn(`API rate limit exceeded. Retrying in ${delay.toFixed(2)}ms...`);
+                if (i === maxRetries - 1) {
+                    // If this was the last retry, throw an error
+                    throw new Error("API quota exceeded. Please try again later.");
+                }
+                console.warn(`API rate limit hit. Retrying in ${delay / 1000}s... (Attempt ${i + 1}/${maxRetries})`);
                 await new Promise(resolve => setTimeout(resolve, delay));
-                attempt++;
+                delay *= 2; // Double the delay for the next retry
             } else {
-                // For other errors, throw immediately
-                const errorText = await response.text();
-                throw new Error(`API Error: ${response.status} - ${errorText}`);
+                // If the response is not 429, return it for normal processing
+                return response;
             }
         }
-        throw new Error('API request failed after multiple retries.');
     }
 
 
@@ -1354,10 +1374,14 @@
                 showModal('Please select an image first.');
                 return;
             }
+            if (isApiBusy) {
+                showModal("Please wait for the current operation to complete before starting a new one.");
+                return;
+            }
 
-            loadingSpinner.style.display = 'block'; // Show loading spinner
+            loadingSpinner.style.display = 'block';
             emotionText.textContent = 'Analyzing emotion... Please wait.';
-            analyzeButton.disabled = true; // Disable button during analysis
+            setApiBusy(true);
 
             try {
                 const prompt = "Analyze the emotion and current situation of the dog or cat in this image. Is it hungry, playful, sleepy, sad, happy, curious, or showing any other distinct emotion? Describe its current situation in a concise manner. Focus on what the pet might be feeling or doing.";
@@ -1378,12 +1402,19 @@
                         }
                     ],
                 };
+                
+                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_API_KEY}`;
+                const response = await fetchWithExponentialBackoff(apiUrl, payload);
 
-                const apiKey = firebaseConfig.apiKey;
-                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-pro-vision:generateContent?key=${apiKey}`;
+                if (!response || !response.ok) {
+                    const errorText = response ? await response.text() : "No response from server";
+                    console.error('API Error Response Text:', errorText);
+                    showModal(`API Error: ${response ? response.status : 'N/A'} - ${errorText.substring(0, 150)}...`);
+                    emotionText.textContent = 'Analysis failed due to API error.';
+                    return;
+                }
 
-                const result = await fetchWithExponentialBackoff(apiUrl, payload);
-
+                const result = await response.json();
 
                 if (result.candidates && result.candidates.length > 0 &&
                     result.candidates[0].content && result.candidates[0].content.parts &&
@@ -1398,11 +1429,11 @@
 
             } catch (error) {
                 console.error('Error analyzing image:', error);
-                showModal(`An error occurred: ${error.message}. Please check the console for more details.`);
+                showModal(error.message || 'A network error occurred. Please check your internet connection or console for more details.');
                 emotionText.textContent = 'Analysis failed. Please try again.';
             } finally {
-                loadingSpinner.style.display = 'none'; // Hide loading spinner
-                analyzeButton.disabled = false; // Re-enable button
+                loadingSpinner.style.display = 'none';
+                setApiBusy(false);
             }
         });
     }
@@ -1420,10 +1451,14 @@
                 showModal('Please fill in all pet details to generate personalized content.');
                 return;
             }
+            if (isApiBusy) {
+                showModal("Please wait for the current operation to complete before starting a new one.");
+                return;
+            }
 
             personalizedLoadingSpinner.style.display = 'block';
             personalizedContentText.innerHTML = '<p>Generating personalized advice... This might take a moment.</p>';
-            generateContentButton.disabled = true;
+            setApiBusy(true);
 
             try {
                 const prompt = `Generate personalized content for a pet with the following details:
@@ -1448,10 +1483,18 @@
                     }],
                 };
 
-                const apiKey = firebaseConfig.apiKey;
-                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${apiKey}`;
+                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_API_KEY}`;
+                const response = await fetchWithExponentialBackoff(apiUrl, payload);
 
-                const result = await fetchWithExponentialBackoff(apiUrl, payload);
+                if (!response || !response.ok) {
+                    const errorText = response ? await response.text() : "No response from server";
+                    console.error('API Error Response Text:', errorText);
+                    showModal(`API Error: ${response ? response.status : 'N/A'} - ${errorText.substring(0, 150)}...`);
+                    personalizedContentText.innerHTML = '<p class="text-red-600">Analysis failed due to API error.</p>';
+                    return;
+                }
+
+                const result = await response.json();
 
                 if (result.candidates && result.candidates.length > 0 &&
                     result.candidates[0].content && result.candidates[0].content.parts &&
@@ -1459,13 +1502,8 @@
                     
                     const text = result.candidates[0].content.parts[0].text;
                     
-                    // 1. Create a new Showdown converter instance
                     const converter = new showdown.Converter();
-                    
-                    // 2. Convert the Markdown text to HTML
                     const htmlContent = converter.makeHtml(text);
-                    
-                    // 3. Set the innerHTML of the display element
                     personalizedContentText.innerHTML = htmlContent;
 
                 } else {
@@ -1476,94 +1514,91 @@
 
             } catch (error) {
                 console.error('Error generating personalized content:', error);
-                showModal(`An error occurred: ${error.message}. Please check the console for more details.`);
+                showModal(error.message || 'A network error occurred. Please check your internet connection or console for more details.');
                 personalizedContentText.innerHTML = '<p class="text-red-600">Failed to generate personalized advice. Please try again.</p>';
             } finally {
                 personalizedLoadingSpinner.style.display = 'none';
-                generateContentButton.disabled = false;
+                setApiBusy(false);
             }
         });
     }
-    
+
     // --- Chatbot Logic ---
-    let chatHistory = [];
+    let chatHistory = []; // To maintain conversation context
 
-    async function handleSendMessage() {
+    async function handleChatSend() {
         const userMessage = chatInput.value.trim();
-        if (userMessage === '') return;
+        if (!userMessage) return;
+        if (isApiBusy) {
+            // Don't show a modal for chat, just ignore the send attempt silently.
+            return;
+        }
 
-        // Display user message
-        const userMessageDiv = document.createElement('div');
-        userMessageDiv.className = 'chat-message user-message';
-        userMessageDiv.textContent = userMessage;
-        chatWindow.appendChild(userMessageDiv);
-
-        // Clear input and scroll
+        appendMessage(userMessage, 'user');
         chatInput.value = '';
-        chatWindow.scrollTop = chatWindow.scrollHeight;
+        setApiBusy(true);
 
-        // Show typing indicator
-        const typingIndicator = document.createElement('div');
-        typingIndicator.className = 'chat-message bot-typing';
-        typingIndicator.textContent = 'Pet\'emote is typing...';
-        chatWindow.appendChild(typingIndicator);
-        chatWindow.scrollTop = chatWindow.scrollHeight;
-        
-        // Add user message to history
-        chatHistory.push({ role: "user", parts: [{ text: userMessage }] });
+        const thinkingMessageElement = appendMessage('...', 'bot thinking');
 
         try {
+            chatHistory.push({ role: "user", parts: [{ text: userMessage }] });
+
             const payload = {
-                contents: chatHistory, // Send the whole history for context
-                 generationConfig: {
-                    // Optional: configure temperature, topP, etc.
-                }
+                contents: chatHistory,
             };
-            
-            const apiKey = "AIzaSyCcPlWydAmf4IQEQwLqvk_ZrJbxWQE1cYY";
-            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${apiKey}`;
 
-            const result = await fetchWithExponentialBackoff(apiUrl, payload);
-            
-            const botResponseText = result.candidates[0].content.parts[0].text;
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_API_KEY}`;
+            const response = await fetchWithExponentialBackoff(apiUrl, payload);
 
-            // Add bot response to history
-            chatHistory.push({ role: "model", parts: [{ text: botResponseText }] });
+            if (!response || !response.ok) {
+                const errorText = response ? await response.text() : "No response from server";
+                throw new Error(`API Error: ${response ? response.status : 'N/A'} - ${errorText}`);
+            }
 
+            const result = await response.json();
+            let botResponse = 'Sorry, I could not get a valid response.';
 
-            // Remove typing indicator
-            chatWindow.removeChild(typingIndicator);
+            if (result.candidates && result.candidates.length > 0 &&
+                result.candidates[0].content && result.candidates[0].content.parts &&
+                result.candidates[0].content.parts.length > 0) {
+                botResponse = result.candidates[0].content.parts[0].text;
+            } else {
+                 console.error('Unexpected API response structure:', result);
+            }
 
-            // Display bot message
-            const botMessageDiv = document.createElement('div');
-            botMessageDiv.className = 'chat-message bot-message';
-            botMessageDiv.textContent = botResponseText;
-            chatWindow.appendChild(botMessageDiv);
+            thinkingMessageElement.textContent = botResponse;
+            thinkingMessageElement.classList.remove('thinking');
+
+            chatHistory.push({ role: "model", parts: [{ text: botResponse }] });
 
         } catch (error) {
-            console.error("Chatbot API Error:", error);
-            chatWindow.removeChild(typingIndicator); // Remove typing indicator on error
-            const errorMessageDiv = document.createElement('div');
-            errorMessageDiv.className = 'chat-message bot-message';
-            errorMessageDiv.textContent = 'Sorry, I encountered an error. Please try again.';
-            chatWindow.appendChild(errorMessageDiv);
+            console.error('Error with chatbot:', error);
+            thinkingMessageElement.textContent = error.message || 'Sorry, something went wrong. Please try again.';
+            thinkingMessageElement.classList.remove('thinking');
         } finally {
-            // Scroll to the bottom
-            chatWindow.scrollTop = chatWindow.scrollHeight;
+            setApiBusy(false);
         }
     }
 
-    if(sendChatButton) {
-        sendChatButton.addEventListener('click', handleSendMessage);
+    function appendMessage(message, type) {
+        const messageElement = document.createElement('div');
+        messageElement.className = `chat-message ${type}`;
+        messageElement.textContent = message;
+        chatWindow.appendChild(messageElement);
+        chatWindow.scrollTop = chatWindow.scrollHeight;
+        return messageElement;
     }
-    if(chatInput) {
-        chatInput.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') {
-                handleSendMessage();
+
+    if (sendChatButton) {
+        sendChatButton.addEventListener('click', handleChatSend);
+    }
+    if (chatInput) {
+        chatInput.addEventListener('keypress', function(event) {
+            if (event.key === 'Enter') {
+                handleChatSend();
             }
         });
     }
-
 
     // --- Article Data and Rendering Logic ---
     const articlesData = [
@@ -1572,7 +1607,6 @@
             summary: "Decoding your dog's signals is key to a happy relationship. From subtle ear twitches to enthusiastic tail wags, learn what your canine companion is trying to tell you. This article covers common postures, facial expressions, and vocalizations that reveal your dog's mood, needs, and intentions.",
             content: `
                 <p>Dogs communicate primarily through their body language. As pet parents, learning to interpret these subtle (and not-so-subtle) cues is crucial for building a strong bond, addressing their needs, and ensuring their well-being. This guide will help you understand the basics of canine communication.</p>
-
                 <h4>The Tail: More Than Just a Wag</h4>
                 <ul>
                     <li><strong>High, Fast Wag:</strong> Often indicates excitement and happiness. A full-body wag that includes their hips usually means extreme joy.</li>
@@ -1581,7 +1615,6 @@
                     <li><strong>Stiff, High Wag:</strong> May indicate alertness, arousal, or potential aggression. This is not a friendly wag.</li>
                     <li><strong>Tail at Natural Position with Gentle Wag:</strong> A relaxed, happy, and comfortable dog.</li>
                 </ul>
-
                 <h4>Facial Expressions: The Eyes, Ears, and Mouth</h4>
                 <ul>
                     <li><strong>Soft, Relaxed Eyes:</strong> Often squinted or almond-shaped, indicating comfort and trust.</li>
@@ -1593,7 +1626,6 @@
                     <li><strong>Yawning (without being tired):</strong> Another common stress signal, similar to lip-licking.</li>
                     <li><strong>Exposed Teeth (Snarl):</strong> A warning sign of aggression.</li>
                 </ul>
-
                 <h4>Body Postures: The Whole Picture</h4>
                 <ul>
                     <li><strong>Play Bow:</strong> Front end down, rear end up, tail wagging. An invitation to play.</li>
@@ -1602,7 +1634,6 @@
                     <li><strong>Cowering/Lowered Body:</strong> Fear or submission.</li>
                     <li><strong>Rolling Over (Exposing Belly):</strong> Can be an invitation for a belly rub (if relaxed) or a submissive gesture (if tense). Look for other cues.</li>
                 </ul>
-
                 <h4>Vocalizations: Beyond the Bark</h4>
                 <ul>
                     <li><strong>Barks:</strong> Can vary widely in meaning depending on pitch, duration, and frequency. A sharp, high-pitched bark might be excitement, while a low, guttural bark could be a warning.</li>
@@ -1610,7 +1641,6 @@
                     <li><strong>Whines:</strong> Often indicate a need (food, attention, potty break) or anxiety/distress.</li>
                     <li><strong>Howls:</strong> Can be a form of communication over long distances or a response to certain sounds.</li>
                 </ul>
-
                 <p>Remember, body language should always be interpreted in context. Observe your dog's entire body, the situation, and past behaviors to get the most accurate understanding of their emotions.</p>
             `
         },
@@ -1619,7 +1649,6 @@
             summary: "Cats communicate in mysterious ways, but with a little knowledge, you can become a feline whisperer! Discover the nuances of meows, purrs, hisses, and growls, as well as the secret language of their tails, ears, and eyes. Understanding these cues will help you respond to your cat's desires and discomforts.",
             content: `
                 <p>Cats are often considered enigmatic, but they are constantly communicating with us through a rich array of vocalizations, facial expressions, and body postures. Understanding these subtle cues can deepen your bond and help you better cater to your cat's needs.</p>
-
                 <h4>The Tail: A Cat's Emotional Barometer</h4>
                 <ul>
                     <li><strong>Tail Held High, Tip Curled:</strong> A confident, friendly, and happy cat. This is often an invitation for interaction.</li>
@@ -1629,7 +1658,6 @@
                     <li><strong>Tail Puffed Up (Bottle Brush):</strong> Extreme fear or aggression, attempting to look larger to deter a threat.</li>
                     <li><strong>Tail Wrapped Around You:</strong> A sign of affection and belonging.</li>
                 </ul>
-
                 <h4>Ears: Tiny Antennas of Emotion</h4>
                 <ul>
                     <li><strong>Ears Forward/Alert:</strong> Engaged, interested, and listening.</li>
@@ -1637,7 +1665,6 @@
                     <li><strong>Ears Pointing Sideways and Down:</strong> Indicates fear or aggression.</li>
                     <li><strong>Ears Rapidly Flicking:</strong> A sign of anxiety or being overstimulated.</li>
                 </ul>
-
                 <h4>Eyes: Windows to the Feline Soul</h4>
                 <ul>
                     <li><strong>Slow Blink:</strong> A cat's "I love you." If your cat slow-blinks at you, try slow-blinking back to reciprocate.</li>
@@ -1645,7 +1672,6 @@
                     <li><strong>Constricted Pupils (Slit):</strong> Often a sign of aggression or discomfort, especially in bright light.</li>
                     <li><strong>Direct Stare:</strong> Can be challenging or a sign of intense focus. Averted gaze is generally more friendly.</li>
                 </ul>
-
                 <h4>Vocalizations: The Language of Meows</h4>
                 <ul>
                     <li><strong>Short Meow:</strong> A common greeting. "Hello!"</li>
@@ -1656,7 +1682,6 @@
                     <li><strong>Hiss/Growl/Spit:</strong> Clear warning signs of fear, anger, or aggression. "Stay away!"</li>
                     <li><strong>Trill/Chirp:</strong> A soft, rolling vocalization, often used by mothers to call kittens or by cats to get your attention in a friendly way.</li>
                 </ul>
-
                 <h4>Body Postures: Reading the Whole Cat</h4>
                 <ul>
                     <li><strong>Rubbing Against You (Bunting):</strong> Affectionate greeting, marking you with their scent.</li>
@@ -1665,7 +1690,6 @@
                     <li><strong>Crouched Low (Wagging Tail or Still):</strong> Predatory behavior, ready to pounce.</li>
                     <li><strong>Rolling on Back (Exposing Belly):</strong> If relaxed, it's a sign of trust and an invitation for a gentle rub (but often not a full belly rub!). If tense, it's a defensive posture.</li>
                 </ul>
-
                 <p>By paying attention to your cat's entire body, you can better understand their moods and needs, leading to a more harmonious household.</p>
             `
         },
@@ -1674,7 +1698,6 @@
             summary: "A balanced diet is the cornerstone of a healthy life for your pet. This comprehensive guide explores nutritional requirements for puppies/kittens, adult, and senior pets. Learn how to choose the best food, understand ingredient labels, and manage portion sizes to keep your furry friend thriving.",
             content: `
                 <p>Just like humans, pets have varying nutritional needs throughout their lives. Providing the right diet at each stage is crucial for their growth, energy, and overall health. This guide breaks down the dietary considerations for puppies/kittens, adult pets, and seniors.</p>
-
                 <h4>1. Puppies & Kittens (Growth Stage)</h4>
                 <p>The first year of a pet's life (or up to 18-24 months for large dog breeds) is a period of rapid growth and development. Their nutritional needs are intense.</p>
                 <ul>
@@ -1685,7 +1708,6 @@
                     <li><strong>Small, Frequent Meals:</strong> Puppies and kittens have small stomachs and high energy needs, so feed them 3-4 times a day.</li>
                 </ul>
                 <p><strong>Recommendation:</strong> Choose a reputable "puppy formula" or "kitten formula" specifically designed for growth, often labeled "for all life stages" or "for growth."</p>
-
                 <h4>2. Adult Pets (Maintenance Stage)</h4>
                 <p>Once your pet reaches maturity, their growth slows, and their energy needs stabilize. The goal is to maintain a healthy weight and provide balanced nutrition for ongoing health.</p>
                 <ul>
@@ -1696,7 +1718,6 @@
                     <li><strong>Scheduled Meals:</strong> Most adult pets thrive on 1-2 meals per day. Portion control is critical to prevent weight gain.</li>
                 </ul>
                 <p><strong>Recommendation:</strong> Select an "adult formula" appropriate for your pet's size and activity level. If your pet has specific health concerns (e.g., allergies, sensitive stomach), consult your vet for specialized diets.</p>
-
                 <h4>3. Senior Pets (Aging Stage)</h4>
                 <p>As pets age (typically starting around 7 years for dogs, 10 for cats, but varies by breed), their metabolism slows, activity often decreases, and specific health issues may arise.</p>
                 <ul>
@@ -1708,7 +1729,6 @@
                     <li><strong>Fiber:</strong> To aid digestion and promote satiety.</li>
                 </ul>
                 <p><strong>Recommendation:</strong> Transition to a "senior formula" or "senior/healthy aging" diet. These are designed to support cognitive function, joint health, and organ function in aging pets. Regular veterinary check-ups are paramount for senior pets.</p>
-
                 <h4>Understanding Ingredient Labels</h4>
                 <p>Regardless of the life stage, always look for:</p>
                 <ul>
@@ -1724,7 +1744,6 @@
             summary: "Build a strong, trusting bond with your pet through positive reinforcement. This method focuses on rewarding desired behaviors, making training a fun and positive experience. Explore techniques for teaching commands, addressing common behavioral issues, and fostering a well-behaved companion.",
             content: `
                 <p>Positive reinforcement is a powerful and humane training method that focuses on rewarding desired behaviors, making it more likely your pet will repeat them. This approach builds trust, strengthens your bond, and makes learning enjoyable for both you and your furry friend.</p>
-
                 <h4>What is Positive Reinforcement?</h4>
                 <p>At its core, positive reinforcement involves adding something desirable (a "reinforcer") to the environment immediately after a desired behavior occurs. This makes the pet associate the behavior with a positive outcome, thus increasing the likelihood of that behavior happening again.</p>
                 <ol>
@@ -1733,7 +1752,6 @@
                     <li><strong>High-Value Rewards:</strong> Use treats, praise, toys, or petting that your pet truly loves.</li>
                     <li><strong>Short Sessions:</strong> Keep training sessions brief (5-10 minutes) and fun, especially for puppies/kittens or easily distracted pets.</li>
                 </ol>
-
                 <h4>Getting Started: The Basics</h4>
                 <ul>
                     <li><strong>Identify Desired Behavior:</strong> What do you want your pet to do? (e.g., sit, stay, come, lie down).</li>
@@ -1747,7 +1765,6 @@
                     <li><strong>Reward:</strong> Immediately follow the marker with a high-value treat or praise.</li>
                     <li><strong>Add a Cue:</strong> Once your pet consistently performs the behavior with the lure/capture and marker, start adding a verbal cue (e.g., say "Sit" just before luring them into a sit).</li>
                 </ul>
-
                 <h4>Addressing Common Behavioral Issues</h4>
                 <p>Positive reinforcement is also effective for managing unwanted behaviors by teaching an alternative, desirable behavior.</p>
                 <ul>
@@ -1756,7 +1773,6 @@
                     <li><strong>Chewing Inappropriately:</strong> Provide appropriate chew toys and generously reward your pet when they chew on those. Make inappropriate items less accessible.</li>
                     <li><strong>Training Roadmaps:</strong> Step-by-step training plans adapted to its learning style.</li>
                 </ul>
-
                 <h4>Building a Strong Bond</h4>
                 <ul>
                     <li><strong>Trust:</strong> Your pet learns to trust you as a source of good things.</li>
@@ -1772,10 +1788,8 @@
             summary: "Does your pet get stressed when you leave? Separation anxiety is a common issue, but there are effective strategies to help your pet feel more secure when alone. Learn about behavioral modifications, environmental enrichment, and when to seek professional help to alleviate your pet's distress.",
             content: `
                 <p>Separation anxiety is a common and distressing condition for many pets, particularly dogs, where they experience excessive anxiety when separated from their guardians. Symptoms can range from destructive behavior and excessive vocalization to inappropriate urination/defecation. Addressing separation anxiety requires patience, consistency, and often a multi-faceted approach.</p>
-
                 <h4>Understanding the Cause</h4>
                 <p>Separation anxiety is often triggered by sudden changes in routine, new environments, or traumatic experiences. It's not about your pet being "naughty" or "vindictive"; it's a genuine panic response.</p>
-
                 <h4>1. Desensitization and Counter-Conditioning</h4>
                 <p>This is the cornerstone of treating separation anxiety. The goal is to gradually accustom your pet to your departure cues and associate being alone with positive experiences.</p>
                 <ul>
@@ -1783,28 +1797,24 @@
                     <li><strong>Fake Cues:</strong> Desensitize your pet to your "leaving" cues (picking up keys, putting on shoes) by doing them randomly throughout the day without actually leaving.</li>
                     <li><strong>Positive Associations:</strong> When you do leave, give your pet a high-value, long-lasting treat or a puzzle toy (e.g., Kong stuffed with peanut butter) that will keep them occupied for at least 15-20 minutes. Only give this item when you leave and take it away when you return, so it retains its special "leaving" association.</li>
                 </ul>
-
                 <h4>2. Create a Safe and Comfortable Space</h4>
                 <ul>
                     <li><strong>Den/Crate Training:</strong> For dogs, a comfortable crate can become a safe haven. Introduce it gradually and positively. Never use the crate as punishment.</li>
                     <li><strong>Comfort Items:</strong> Leave a worn piece of your clothing (like a t-shirt) with your scent to provide comfort.</li>
                     <li><strong>Calming Aids:</strong> Consider vet-approved calming pheromone diffusers (e.g., Adaptil for dogs, Feliway for cats), calming treats, or calming music/TV specifically designed for pets.</li>
                 </ul>
-
                 <h4>3. Exercise and Mental Stimulation</h4>
                 <p>A tired pet is often a calmer pet. Ensure your pet gets sufficient physical exercise and mental stimulation before you leave.</p>
                 <ul>
                     <li><strong>Morning Exercise:</strong> A long walk, a game of fetch, or a vigorous play session can help burn off excess energy.</li>
                     <li><strong>Puzzle Toys:</strong> Provide interactive toys that alleviate boredom and keep their minds engaged while you're away.</li>
                 </ul>
-
                 <h4>4. Avoid Dramatic Departures and Greetings</h4>
                 <p>Keep your arrivals and departures low-key. Excessive fuss can heighten your pet's anxiety.</p>
                 <ul>
                     <li><strong>Ignore for a Few Minutes:</strong> When you arrive home, ignore your pet for the first few minutes until they calm down, then greet them calmly.</li>
                     <li><strong>No Emotional Farewells:</strong> Don't make a big deal out of leaving. This can increase their anticipation and anxiety.</li>
                 </ul>
-
                 <h4>When to Seek Professional Help</h4>
                 <p>If your pet's separation anxiety is severe (e.g., self-harm, severe destruction, constant panic), it's crucial to consult a professional:</p>
                 <ul>
@@ -1855,4 +1865,4 @@
 
 </script>
 </body>
-</ht
+</html>
