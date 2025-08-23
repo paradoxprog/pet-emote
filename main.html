@@ -720,36 +720,46 @@
             font-weight: 600;
         }
 
-        /* Chatbot Styles */
-        #chat-window {
-            height: 400px;
-            border: 1px solid var(--border-color-light);
-            border-radius: 8px;
-            padding: 15px;
-            overflow-y: auto;
-            background-color: var(--bg-light);
-            margin-bottom: 15px;
+        /* --- Chatbot Styles --- */
+        #chatbot {
             display: flex;
             flex-direction: column;
+            height: 60vh; /* Adjust height as needed */
+            max-height: 500px;
+            border: 1px solid var(--border-color-light);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px var(--shadow-light);
+        }
+        body.dark #chatbot {
+            border-color: var(--border-color-dark);
+        }
+
+        #chat-window {
+            flex-grow: 1;
+            padding: 20px;
+            overflow-y: auto;
+            background-color: var(--bg-light);
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
         }
         body.dark #chat-window {
-            border-color: var(--border-color-dark);
             background-color: var(--card-bg-dark);
         }
 
         .chat-message {
-            max-width: 80%;
             padding: 10px 15px;
-            border-radius: 15px;
-            margin-bottom: 10px;
-            line-height: 1.4;
+            border-radius: 18px;
+            max-width: 80%;
+            line-height: 1.5;
         }
 
         .user-message {
             background-color: var(--primary-color);
             color: white;
             align-self: flex-end;
-            border-bottom-right-radius: 3px;
+            border-bottom-right-radius: 4px;
         }
 
         .bot-message {
@@ -757,47 +767,73 @@
             color: var(--text-color-light);
             align-self: flex-start;
             border: 1px solid var(--border-color-light);
-            border-bottom-left-radius: 3px;
+            border-bottom-left-radius: 4px;
         }
         body.dark .bot-message {
-            background-color: var(--card-bg-dark);
+            background-color: var(--bg-dark);
             color: var(--text-color-dark);
             border-color: var(--border-color-dark);
         }
+        
+        .bot-typing {
+            font-style: italic;
+            color: var(--text-color-light);
+            opacity: 0.7;
+            align-self: flex-start;
+            padding: 10px 15px;
+        }
+        body.dark .bot-typing {
+            color: var(--text-color-dark);
+        }
+
 
         #chat-input-container {
             display: flex;
-            gap: 10px;
+            padding: 10px;
+            border-top: 1px solid var(--border-color-light);
+            background-color: var(--card-bg-light);
         }
+        body.dark #chat-input-container {
+            border-top-color: var(--border-color-dark);
+            background-color: var(--header-bg-dark);
+        }
+
 
         #chat-input {
             flex-grow: 1;
-            padding: 10px 15px;
-            border-radius: 8px;
+            padding: 12px;
             border: 1px solid var(--border-color-light);
-            background-color: var(--card-bg-light);
+            border-radius: 8px;
+            font-size: 16px;
+            background-color: var(--bg-light);
             color: var(--text-color-light);
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+            margin-right: 10px;
         }
         body.dark #chat-input {
-            border-color: var(--border-color-dark);
             background-color: var(--card-bg-dark);
+            border-color: var(--border-color-dark);
             color: var(--text-color-dark);
+        }
+        #chat-input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(138, 77, 196, 0.2);
         }
 
         #send-chat-button {
             background-color: var(--primary-color);
             color: white;
-            padding: 10px 20px;
-            border: none;
+            padding: 0 20px;
             border-radius: 8px;
-            cursor: pointer;
             font-weight: 600;
+            cursor: pointer;
             transition: background-color 0.3s ease;
+            border: none;
         }
         #send-chat-button:hover {
             background-color: var(--primary-hover);
         }
-
 
     </style>
 </head>
@@ -903,19 +939,21 @@
             </div>
         </div>
     </section>
-
+    
     <!-- Chatbot Section -->
-    <section id="chatbot">
+    <section id="chatbot-section">
         <h2 class="section-heading">Pet'emote Assistant</h2>
-        <p>Have questions about your pet? Ask our AI assistant!</p>
-        <div id="chat-window">
-            <div class="chat-message bot-message">
-                Hello! How can I help you with your pet today?
+        <p class="text-center mb-6">Have questions about your pet? Ask our AI assistant for help and advice!</p>
+        <div id="chatbot">
+            <div id="chat-window">
+                <div class="chat-message bot-message">
+                    Hello! I'm the Pet'emote assistant. How can I help you and your furry friend today?
+                </div>
             </div>
-        </div>
-        <div id="chat-input-container">
-            <input type="text" id="chat-input" placeholder="Type your message...">
-            <button id="send-chat-button">Send</button>
+            <div id="chat-input-container">
+                <input type="text" id="chat-input" placeholder="Ask a question about your pet...">
+                <button id="send-chat-button">Send</button>
+            </div>
         </div>
     </section>
 
@@ -967,28 +1005,21 @@
 
 <script>
     // --- Firebase Configuration ---
-    const firebaseConfig = JSON.parse(typeof __firebase_config !== 'undefined' ? __firebase_config : '{}');
+    const firebaseConfig = {
+        apiKey: "AIzaSyAcNOMZNSC5vmhb4vgFP4Rr1KQH0hCD1iY",
+        authDomain: "pet-emote.firebaseapp.com",
+        databaseURL: "https://pet-emote-default-rtdb.firebaseio.com",
+        projectId: "pet-emote",
+        storageBucket: "pet-emote.firebasestorage.app",
+        messagingSenderId: "560806298260",
+        appId: "1:560806298260:web:8724cda11543d877d52a81",
+        measurementId: "G-Q28JF0E294"
+    };
 
     // Initialize Firebase
     firebase.initializeApp(firebaseConfig);
     const database = firebase.database();
     const auth = firebase.auth();
-
-    // --- Authentication ---
-    async function initializeAuth() {
-        try {
-            if (typeof __initial_auth_token !== 'undefined') {
-                await firebase.auth().signInWithCustomToken(__initial_auth_token);
-            } else {
-                await firebase.auth().signInAnonymously();
-            }
-        } catch (error) {
-            console.error("Firebase authentication failed:", error);
-            showModal("Could not connect to the backend services. Please refresh.");
-        }
-    }
-    initializeAuth();
-
 
     // --- UI Elements for Analyzer Section ---
     const imageUpload = document.getElementById('imageUpload');
@@ -1012,11 +1043,12 @@
     const generateContentButton = document.getElementById('generateContentButton');
     const personalizedLoadingSpinner = document.getElementById('personalizedLoadingSpinner');
     const personalizedContentText = document.getElementById('personalizedContentText');
-
+    
     // --- UI Elements for Chatbot Section ---
     const chatWindow = document.getElementById('chat-window');
     const chatInput = document.getElementById('chat-input');
     const sendChatButton = document.getElementById('send-chat-button');
+
 
     // --- Modal Elements (Global scope for accessibility) ---
     const myModal = document.getElementById('myModal');
@@ -1095,7 +1127,7 @@
         'analyzer': document.getElementById('analyzer'),
         'articles': document.getElementById('articles'),
         'personalized-content': document.getElementById('personalized-content'),
-        'chatbot': document.getElementById('chatbot'),
+        'chatbot-section': document.getElementById('chatbot-section'),
         'profile': document.getElementById('profile')
     };
 
@@ -1130,8 +1162,8 @@
             void sections[sectionIdToShow].offsetWidth; // Trigger reflow for animation
             sections[sectionIdToShow].classList.add('active');
         }
-        if (navLinks[`link-${sectionIdToShow}`]) {
-            navLinks[`link-${sectionIdToShow}`].classList.add('active-nav-link');
+        if (navLinks[`link-${sectionIdToShow.replace('-section', '')}`]) {
+            navLinks[`link-${sectionIdToShow.replace('-section', '')}`].classList.add('active-nav-link');
         }
     }
 
@@ -1139,7 +1171,7 @@
     if (navLinks['link-analyzer']) navLinks['link-analyzer'].addEventListener('click', (e) => { e.preventDefault(); showSection('analyzer'); });
     if (navLinks['link-articles']) navLinks['link-articles'].addEventListener('click', (e) => { e.preventDefault(); showSection('articles'); });
     if (navLinks['link-personalized-content']) navLinks['link-personalized-content'].addEventListener('click', (e) => { e.preventDefault(); showSection('personalized-content'); });
-    if (navLinks['link-chatbot']) navLinks['link-chatbot'].addEventListener('click', (e) => { e.preventDefault(); showSection('chatbot'); });
+    if (navLinks['link-chatbot']) navLinks['link-chatbot'].addEventListener('click', (e) => { e.preventDefault(); showSection('chatbot-section'); });
     if (navLinks['link-profile']) navLinks['link-profile'].addEventListener('click', (e) => { e.preventDefault(); showSection('profile'); });
 
 
@@ -1219,8 +1251,8 @@
             return;
         }
         try {
-            const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
-            const userRef = database.ref(`artifacts/${appId}/users/${uid}/profile`);
+            const userRef = database.ref(`users/${uid}`);
+            // Check if user data already exists to avoid overwriting display name for existing users
             const snapshot = await userRef.once('value');
             if (!snapshot.exists()) {
                  await userRef.set({
@@ -1319,8 +1351,8 @@
                     ],
                 };
 
-                const apiKey = "";
-                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`;
+                const apiKey = "AIzaSyCcPlWydAmf4IQEQwLqvk_ZrJbxWQE1cYY";
+                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
 
                 const response = await fetch(apiUrl, {
                     method: 'POST',
@@ -1406,8 +1438,8 @@
                     }],
                 };
 
-                const apiKey = "";
-                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`;
+                const apiKey = "AIzaSyCcPlWydAmf4IQEQwLqvk_ZrJbxWQE1cYY";
+                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
 
                 const response = await fetch(apiUrl, {
                     method: 'POST',
@@ -1461,91 +1493,98 @@
             }
         });
     }
-
+    
     // --- Chatbot Logic ---
     let chatHistory = [];
 
-    async function sendMessageToBot() {
+    async function handleSendMessage() {
         const userMessage = chatInput.value.trim();
-        if (!userMessage) return;
+        if (userMessage === '') return;
 
-        appendMessage(userMessage, 'user');
+        // Display user message
+        const userMessageDiv = document.createElement('div');
+        userMessageDiv.className = 'chat-message user-message';
+        userMessageDiv.textContent = userMessage;
+        chatWindow.appendChild(userMessageDiv);
+
+        // Clear input and scroll
         chatInput.value = '';
-        chatInput.disabled = true;
-        sendChatButton.disabled = true;
+        chatWindow.scrollTop = chatWindow.scrollHeight;
 
-        appendMessage('...', 'bot-loading'); // Show loading indicator
+        // Show typing indicator
+        const typingIndicator = document.createElement('div');
+        typingIndicator.className = 'chat-message bot-typing';
+        typingIndicator.textContent = 'Pet\'emote is typing...';
+        chatWindow.appendChild(typingIndicator);
+        chatWindow.scrollTop = chatWindow.scrollHeight;
+        
+        // Add user message to history
+        chatHistory.push({ role: "user", parts: [{ text: userMessage }] });
 
         try {
-            chatHistory.push({ role: "user", parts: [{ text: userMessage }] });
+            const prompt = `You are a helpful and friendly AI assistant for an app called Pet'emote. Your goal is to provide safe, accurate, and helpful advice about pets (dogs and cats). Always be encouraging and supportive. Do not provide medical diagnoses; instead, strongly advise the user to consult a veterinarian for any health concerns. Here is the user's question: "${userMessage}"`;
 
             const payload = {
-                contents: chatHistory,
+                contents: chatHistory, // Send the whole history for context
+                 generationConfig: {
+                    // Optional: configure temperature, topP, etc.
+                }
             };
-
-            const apiKey = ""; // Use the same API key
-            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`;
+            
+            // Note: Use your actual API key here. It's hardcoded for this example but should be handled securely.
+            const apiKey = "AIzaSyCcPlWydAmf4IQEQwLqvk_ZrJbxWQE1cYY";
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
 
             const response = await fetch(apiUrl, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(payload)
             });
-
-            document.querySelector('.bot-loading').remove(); // Remove loading indicator
-
+            
             if (!response.ok) {
-                const errorText = await response.text();
-                console.error('API Error Response Text:', errorText);
-                appendMessage('Sorry, something went wrong. Please try again.', 'bot');
-                return;
+                throw new Error(`API Error: ${response.status}`);
             }
 
             const result = await response.json();
+            const botResponseText = result.candidates[0].content.parts[0].text;
 
-            if (result.candidates && result.candidates.length > 0 &&
-                result.candidates[0].content && result.candidates[0].content.parts &&
-                result.candidates[0].content.parts.length > 0) {
-                const botResponse = result.candidates[0].content.parts[0].text;
-                appendMessage(botResponse, 'bot');
-                chatHistory.push({ role: "model", parts: [{ text: botResponse }] });
-            } else {
-                appendMessage('I am not sure how to respond to that.', 'bot');
-            }
+            // Add bot response to history
+            chatHistory.push({ role: "model", parts: [{ text: botResponseText }] });
+
+
+            // Remove typing indicator
+            chatWindow.removeChild(typingIndicator);
+
+            // Display bot message
+            const botMessageDiv = document.createElement('div');
+            botMessageDiv.className = 'chat-message bot-message';
+            botMessageDiv.textContent = botResponseText;
+            chatWindow.appendChild(botMessageDiv);
 
         } catch (error) {
-            console.error('Error with chatbot:', error);
-            document.querySelector('.bot-loading').remove(); // Remove loading indicator
-            appendMessage('Sorry, there was an error connecting to the assistant.', 'bot');
+            console.error("Chatbot API Error:", error);
+            chatWindow.removeChild(typingIndicator); // Remove typing indicator on error
+            const errorMessageDiv = document.createElement('div');
+            errorMessageDiv.className = 'chat-message bot-message';
+            errorMessageDiv.textContent = 'Sorry, I encountered an error. Please try again.';
+            chatWindow.appendChild(errorMessageDiv);
         } finally {
-            chatInput.disabled = false;
-            sendChatButton.disabled = false;
-            chatInput.focus();
+            // Scroll to the bottom
+            chatWindow.scrollTop = chatWindow.scrollHeight;
         }
     }
 
-    function appendMessage(message, type) {
-        const messageElement = document.createElement('div');
-        if (type === 'bot-loading') {
-            messageElement.classList.add('chat-message', 'bot-message', 'bot-loading');
-        } else {
-            messageElement.classList.add('chat-message', type === 'user' ? 'user-message' : 'bot-message');
-        }
-        messageElement.textContent = message;
-        chatWindow.appendChild(messageElement);
-        chatWindow.scrollTop = chatWindow.scrollHeight;
+    if(sendChatButton) {
+        sendChatButton.addEventListener('click', handleSendMessage);
     }
-
-    if (sendChatButton) {
-        sendChatButton.addEventListener('click', sendMessageToBot);
-    }
-    if (chatInput) {
-        chatInput.addEventListener('keypress', function(e) {
+    if(chatInput) {
+        chatInput.addEventListener('keypress', (e) => {
             if (e.key === 'Enter') {
-                sendMessageToBot();
+                handleSendMessage();
             }
         });
     }
+
 
     // --- Article Data and Rendering Logic ---
     const articlesData = [
