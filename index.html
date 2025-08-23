@@ -680,7 +680,16 @@
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
 <script>
     // --- Firebase Configuration ---
-    const firebaseConfig = JSON.parse(typeof __firebase_config !== 'undefined' ? __firebase_config : '{}');
+    const firebaseConfig = {
+      apiKey: "AIzaSyAcNOMZNSC5vmhb4vgFP4Rr1KQH0hCD1iY",
+      authDomain: "pet-emote.firebaseapp.com",
+      databaseURL: "https://pet-emote-default-rtdb.firebaseio.com",
+      projectId: "pet-emote",
+      storageBucket: "pet-emote.firebasestorage.app",
+      messagingSenderId: "560806298260",
+      appId: "1:560806298260:web:8724cda11543d877d52a81",
+      measurementId: "G-Q28JF0E294"
+    };
 
 
     // Initialize Firebase
@@ -816,8 +825,7 @@
             return;
         }
         try {
-            const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
-            const userRef = database.ref(`artifacts/${appId}/users/${uid}/profile`);
+            const userRef = database.ref(`users/${uid}`);
             await userRef.set({
                 uid: uid,
                 email: email,
