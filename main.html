@@ -1277,6 +1277,34 @@
         }
     }
 
+    // --- Exponential Backoff Fetch Logic ---
+    async function fetchWithExponentialBackoff(url, payload, maxRetries = 5) {
+        let attempt = 0;
+        while (attempt < maxRetries) {
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+
+            if (response.ok) {
+                return response.json();
+            }
+
+            if (response.status === 429) {
+                const delay = (2 ** attempt) * 1000 + Math.random() * 1000; // Exponential backoff with jitter
+                console.warn(`API rate limit exceeded. Retrying in ${delay.toFixed(2)}ms...`);
+                await new Promise(resolve => setTimeout(resolve, delay));
+                attempt++;
+            } else {
+                // For other errors, throw immediately
+                const errorText = await response.text();
+                throw new Error(`API Error: ${response.status} - ${errorText}`);
+            }
+        }
+        throw new Error('API request failed after multiple retries.');
+    }
+
 
     // --- Pet Emotion Analyzer Logic ---
     let uploadedBase64Image = null; // Store the base64 image
@@ -1351,29 +1379,11 @@
                     ],
                 };
 
-                const apiKey = "AIzaSyCcPlWydAmf4IQEQwLqvk_ZrJbxWQE1cYY";
+                const apiKey = ""; // API key will be injected by the environment.
                 const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
 
-                const response = await fetch(apiUrl, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload)
-                });
+                const result = await fetchWithExponentialBackoff(apiUrl, payload);
 
-                if (!response.ok) {
-                    const errorText = await response.text();
-                    console.error('API Error Response Text:', errorText);
-                    if (response.status === 403) {
-                        showModal(`API Error: 403 Forbidden. This usually means the API key is missing or invalid.`);
-                        emotionText.textContent = 'Analysis failed: API Key Error (403 Forbidden).';
-                    } else {
-                        showModal(`API Error: ${response.status} - ${errorText.substring(0, Math.min(errorText.length, 150))}...`);
-                        emotionText.textContent = 'Analysis failed due to API error.';
-                    }
-                    return;
-                }
-
-                const result = await response.json();
 
                 if (result.candidates && result.candidates.length > 0 &&
                     result.candidates[0].content && result.candidates[0].content.parts &&
@@ -1387,8 +1397,8 @@
                 }
 
             } catch (error) {
-                console.error('Error analyzing image (network or parsing):', error);
-                showModal('A network error or parsing error occurred. Please check your internet connection or console for more details.');
+                console.error('Error analyzing image:', error);
+                showModal(`An error occurred: ${error.message}. Please check the console for more details.`);
                 emotionText.textContent = 'Analysis failed. Please try again.';
             } finally {
                 loadingSpinner.style.display = 'none'; // Hide loading spinner
@@ -1420,7 +1430,7 @@
                 Name: ${petName}
                 Breed/Type: ${petBreed}
                 Age: ${petAge} years
-                Weight: ${petWeight} kg
+                Weight: ${petWeight}
 
                 Please provide advice for the following categories:
                 1.  **Customized Diet Plan:** Recommendations based on its breed, age, weight, and activity level.
@@ -1438,29 +1448,10 @@
                     }],
                 };
 
-                const apiKey = "AIzaSyCcPlWydAmf4IQEQwLqvk_ZrJbxWQE1cYY";
+                const apiKey = ""; // API key will be injected by the environment.
                 const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
 
-                const response = await fetch(apiUrl, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload)
-                });
-
-                if (!response.ok) {
-                    const errorText = await response.text();
-                    console.error('API Error Response Text:', errorText);
-                    if (response.status === 403) {
-                        showModal(`API Error: 403 Forbidden. This usually means the API key is missing or invalid.`);
-                        personalizedContentText.innerHTML = '<p class="text-red-600">Analysis failed: API Key Error (403 Forbidden).</p>';
-                    } else {
-                        showModal(`API Error: ${response.status} - ${errorText.substring(0, Math.min(errorText.length, 150))}...`);
-                        personalizedContentText.innerHTML = '<p class="text-red-600">Analysis failed due to API error.</p>';
-                    }
-                    return;
-                }
-
-                const result = await response.json();
+                const result = await fetchWithExponentialBackoff(apiUrl, payload);
 
                 if (result.candidates && result.candidates.length > 0 &&
                     result.candidates[0].content && result.candidates[0].content.parts &&
@@ -1484,8 +1475,8 @@
                 }
 
             } catch (error) {
-                console.error('Error generating personalized content (network or parsing):', error);
-                showModal('A network error or parsing error occurred. Please check your internet connection or console for more details.');
+                console.error('Error generating personalized content:', error);
+                showModal(`An error occurred: ${error.message}. Please check the console for more details.`);
                 personalizedContentText.innerHTML = '<p class="text-red-600">Failed to generate personalized advice. Please try again.</p>';
             } finally {
                 personalizedLoadingSpinner.style.display = 'none';
@@ -1522,8 +1513,6 @@
         chatHistory.push({ role: "user", parts: [{ text: userMessage }] });
 
         try {
-            const prompt = `You are a helpful and friendly AI assistant for an app called Pet'emote. Your goal is to provide safe, accurate, and helpful advice about pets (dogs and cats). Always be encouraging and supportive. Do not provide medical diagnoses; instead, strongly advise the user to consult a veterinarian for any health concerns. Here is the user's question: "${userMessage}"`;
-
             const payload = {
                 contents: chatHistory, // Send the whole history for context
                  generationConfig: {
@@ -1531,21 +1520,11 @@
                 }
             };
             
-            // Note: Use your actual API key here. It's hardcoded for this example but should be handled securely.
-            const apiKey = "AIzaSyCcPlWydAmf4IQEQwLqvk_ZrJbxWQE1cYY";
+            const apiKey = ""; // API key will be injected by the environment.
             const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
 
-            const response = await fetch(apiUrl, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload)
-            });
+            const result = await fetchWithExponentialBackoff(apiUrl, payload);
             
-            if (!response.ok) {
-                throw new Error(`API Error: ${response.status}`);
-            }
-
-            const result = await response.json();
             const botResponseText = result.candidates[0].content.parts[0].text;
 
             // Add bot response to history
